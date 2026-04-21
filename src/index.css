@@ -1,0 +1,223 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Tajawal:wght@300;400;500;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 2% 96%;
+    --foreground: 212 36% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 212 36% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 212 36% 15%;
+
+    --primary: 186 37% 29%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 37 38% 63%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 210 2% 91%;
+    --muted-foreground: 20 7% 45%;
+
+    --accent: 186 20% 90%;
+    --accent-foreground: 186 37% 24%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 210 2% 88%;
+    --input: 210 2% 85%;
+    --ring: 186 37% 29%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 212 36% 14%;
+    --sidebar-foreground: 37 30% 92%;
+    --sidebar-primary: 37 38% 63%;
+    --sidebar-primary-foreground: 212 36% 14%;
+    --sidebar-accent: 212 30% 22%;
+    --sidebar-accent-foreground: 37 30% 92%;
+    --sidebar-border: 212 25% 20%;
+    --sidebar-ring: 37 38% 63%;
+
+    --nauss-primary: 186 37% 29%;
+    --nauss-gold: 37 38% 63%;
+    --nauss-bg: 210 2% 96%;
+    --nauss-dark: 212 36% 10%;
+    --nauss-teal: 186 37% 29%;
+    --nauss-teal-dark: 212 36% 20%;
+    --nauss-teal-light: 186 25% 40%;
+    --nauss-olive: 39 24% 42%;
+    --nauss-mauve: 354 19% 45%;
+    --nauss-warm-gray: 20 7% 50%;
+    --nauss-navy: 212 36% 34%;
+    --nauss-light-gray: 210 2% 85%;
+
+    --pillar-education: 186 37% 29%;
+    --pillar-research: 212 36% 34%;
+    --pillar-training: 39 24% 42%;
+    --pillar-external: 354 19% 45%;
+    --enabler-financial: 152 38% 32%;
+    --enabler-governance: 25 45% 28%;
+    --enabler-digital: 212 36% 30%;
+    --enabler-admin: 275 35% 30%;
+
+    --gold-border: 37 38% 63%;
+    --success: 152 55% 40%;
+    --warning: 38 90% 50%;
+
+    --gradient-hero: linear-gradient(135deg, hsl(212 36% 18%), hsl(186 37% 29%));
+    --gradient-gold: linear-gradient(135deg, hsl(37 38% 58%), hsl(37 48% 70%));
+    --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.03);
+    --shadow-card-hover: 0 2px 8px rgba(0,0,0,0.06), 0 8px 28px rgba(0,0,0,0.05);
+  }
+
+  .dark {
+    --background: 212 30% 5%;
+    --foreground: 37 15% 94%;
+
+    --card: 212 25% 9%;
+    --card-foreground: 37 15% 94%;
+
+    --popover: 212 25% 9%;
+    --popover-foreground: 37 15% 94%;
+
+    --primary: 37 38% 63%;
+    --primary-foreground: 212 30% 5%;
+
+    --secondary: 186 37% 28%;
+    --secondary-foreground: 37 15% 94%;
+
+    --muted: 212 20% 13%;
+    --muted-foreground: 37 10% 58%;
+
+    --accent: 212 25% 15%;
+    --accent-foreground: 37 15% 94%;
+
+    --destructive: 0 55% 35%;
+    --destructive-foreground: 37 15% 94%;
+
+    --border: 212 20% 15%;
+    --input: 212 20% 15%;
+    --ring: 37 38% 63%;
+
+    --sidebar-background: 212 36% 5%;
+    --sidebar-foreground: 37 10% 90%;
+    --sidebar-primary: 37 38% 63%;
+    --sidebar-primary-foreground: 212 36% 5%;
+    --sidebar-accent: 212 30% 12%;
+    --sidebar-accent-foreground: 37 10% 90%;
+    --sidebar-border: 212 20% 12%;
+    --sidebar-ring: 37 38% 63%;
+
+    --shadow-card: 0 1px 3px rgba(0,0,0,0.25), 0 6px 16px rgba(0,0,0,0.18);
+    --shadow-card-hover: 0 4px 12px rgba(0,0,0,0.35), 0 12px 28px rgba(0,0,0,0.22);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', 'Tajawal', sans-serif;
+  }
+
+  [dir="rtl"] body,
+  [dir="rtl"] {
+    font-family: 'Tajawal', 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+  .card-premium {
+    @apply bg-card rounded-xl border border-border/50 overflow-hidden transition-all duration-300;
+    box-shadow: var(--shadow-card);
+  }
+  .card-premium:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-1px);
+  }
+
+  .gold-accent {
+    @apply relative;
+  }
+  .gold-accent::before {
+    content: '';
+    @apply absolute top-0 inset-x-0 h-0.5 rounded-t-xl;
+    background: linear-gradient(90deg, hsl(var(--nauss-gold)), hsl(37 50% 72%), hsl(var(--nauss-gold)));
+  }
+
+  .hero-banner {
+    @apply relative rounded-2xl overflow-hidden;
+  }
+  .hero-banner::after {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(135deg, hsla(212, 36%, 14%, 0.9), hsla(186, 37%, 29%, 0.78));
+  }
+
+  .stat-card {
+    @apply bg-card rounded-xl border border-border/40 p-5 transition-all duration-300 relative overflow-hidden;
+    box-shadow: var(--shadow-card);
+  }
+  .stat-card:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-1px);
+  }
+  .stat-card::after {
+    content: '';
+    @apply absolute -bottom-6 -end-6 w-20 h-20 rounded-full opacity-[0.06];
+    background: hsl(var(--nauss-primary));
+  }
+
+  .pillar-card {
+    @apply relative bg-card rounded-xl border border-border/40 overflow-hidden transition-all duration-300 cursor-pointer;
+    box-shadow: var(--shadow-card);
+  }
+  .pillar-card:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
+  }
+
+  .section-header {
+    @apply relative pb-3 mb-6;
+  }
+  .section-header::after {
+    content: '';
+    @apply absolute bottom-0 start-0 h-0.5 w-10 rounded-full;
+    background: hsl(var(--nauss-gold));
+  }
+
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-xl rounded-xl border border-border/30;
+    box-shadow: var(--shadow-card);
+  }
+
+  /* NAUSS-specific top bar */
+  .nauss-topbar {
+    background: hsl(var(--nauss-teal-dark));
+  }
+  .nauss-navbar {
+    background: hsl(var(--nauss-primary) / 0.97);
+    backdrop-filter: blur(12px);
+  }
+}
+
+@layer utilities {
+  .text-gradient-primary {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--nauss-primary)), hsl(186, 25%, 40%));
+  }
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--nauss-gold)), hsl(37, 48%, 72%));
+  }
+}

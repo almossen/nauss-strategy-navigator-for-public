@@ -1,0 +1,1 @@
+ALTER TABLE public.achievement_settings ADD COLUMN key_targets jsonb NOT NULL DEFAULT '[]'::jsonb;

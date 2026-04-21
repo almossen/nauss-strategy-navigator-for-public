@@ -1,0 +1,1 @@
+ALTER TABLE public.achievement_settings ADD COLUMN story_items jsonb NOT NULL DEFAULT '[]'::jsonb;

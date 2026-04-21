@@ -1,0 +1,1 @@
+ALTER TABLE public.kpis ADD COLUMN target_2029_description TEXT NOT NULL DEFAULT '';
