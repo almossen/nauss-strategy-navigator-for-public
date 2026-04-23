@@ -422,35 +422,8 @@ export default function StrategyBackground() {
                 </div>
               )}
             </div>
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      {/* Bottom nav */}
-      <div className="px-6 py-4 border-t border-border/60 bg-card/60 backdrop-blur-sm flex items-center justify-between">
-        <button
-          onClick={isRTL ? next : prev}
-          disabled={isRTL ? current === slides.length - 1 : current === 0}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all disabled:opacity-30"
-          style={{ background: `${slide.color}12`, color: slide.color, border: `1px solid ${slide.color}30` }}
-        >
-          {isRTL ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-          {t('السابق', 'Previous')}
-        </button>
-
-        <span className="text-xs text-muted-foreground font-medium">
-          {current + 1} / {slides.length}
-        </span>
-
-        <button
-          onClick={isRTL ? prev : next}
-          disabled={isRTL ? current === 0 : current === slides.length - 1}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all disabled:opacity-30"
-          style={{ background: `${slide.color}12`, color: slide.color, border: `1px solid ${slide.color}30` }}
-        >
-          {t('التالي', 'Next')}
-          {isRTL ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-        </button>
+          </section>
+        ))}
       </div>
     </div>
   );
