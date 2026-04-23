@@ -1,4 +1,4 @@
-import { LayoutDashboard, Network, Calendar, Globe, ChevronLeft, ChevronRight, Sparkles, Trophy, Target, Settings2, Building2 } from 'lucide-react';
+import { LayoutDashboard, Network, Calendar, Globe, ChevronLeft, ChevronRight, Sparkles, Trophy, Target, Settings2, Building2, BookOpen } from 'lucide-react';
 import { NavLink } from '@/components/NavLink';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAchievementSettings } from '@/hooks/useAchievementSettings';
@@ -26,6 +26,7 @@ export function AppSidebar() {
   const { data: pillarsData } = usePillars();
 
   const staticItems = [
+    { title_ar: 'خلفية الخطة', title_en: 'Plan Background', url: '/strategy-background', icon: BookOpen },
     { title_ar: 'لوحة المعلومات', title_en: 'Dashboard', url: '/', icon: LayoutDashboard },
     { title_ar: 'الهيكل التنظيمي', title_en: 'Hierarchy', url: '/hierarchy', icon: Network },
     { title_ar: 'الجدول الزمني', title_en: 'Timeline', url: '/timeline', icon: Calendar },

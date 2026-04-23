@@ -18,6 +18,7 @@ import Achievements2028 from "./pages/Achievements2028";
 import Achievements2029 from "./pages/Achievements2029";
 import TargetsPage from "./pages/TargetsPage";
 import Enablers from "./pages/Enablers";
+import StrategyBackground from "./pages/StrategyBackground";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
             <AppLayout>
               <Routes>
                 <Route path="/" element={<Dashboard />} />
+                <Route path="/strategy-background" element={<StrategyBackground />} />
                 <Route path="/hierarchy" element={<HierarchyView />} />
                 <Route path="/timeline" element={<TimelineView />} />
                 <Route path="/admin" element={<ControlPanel />} />
