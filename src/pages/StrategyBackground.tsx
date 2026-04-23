@@ -3,8 +3,9 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import {
   BookOpen, Globe2, AlertTriangle,
   Shield, Brain, Users, FileText, TrendingUp, Zap, Search,
-  Building2, GraduationCap, Map, BarChart3
+  Building2, BarChart3
 } from 'lucide-react';
+import { BenchmarkWorldMap } from '@/components/strategy/BenchmarkWorldMap';
 
 // ─── Slide data ───────────────────────────────────────────────────────────────
 
