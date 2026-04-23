@@ -1,8 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import {
-  ChevronLeft, ChevronRight, BookOpen, Globe2, AlertTriangle,
+  BookOpen, Globe2, AlertTriangle,
   Shield, Brain, Users, FileText, TrendingUp, Zap, Search,
   Building2, GraduationCap, Map, BarChart3
 } from 'lucide-react';
