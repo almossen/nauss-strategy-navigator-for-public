@@ -1,4 +1,4 @@
-import { LayoutDashboard, Menu, X, Trophy, Target, Settings2, ChevronDown, Building2, Sparkles } from 'lucide-react';
+import { LayoutDashboard, Menu, X, Trophy, Target, Settings2, ChevronDown, Building2, Sparkles, BookOpen } from 'lucide-react';
 import { NavLink } from '@/components/NavLink';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAchievementSettings } from '@/hooks/useAchievementSettings';
@@ -162,6 +162,17 @@ export function TopNav() {
                   >
                     <LayoutDashboard className="h-4 w-4" />
                     <span>{t('لوحة المعلومات', 'Dashboard')}</span>
+                  </NavLink>
+
+                  {/* Strategy Background */}
+                  <NavLink
+                    to="/strategy-background"
+                    end
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm text-white/65 hover:text-white hover:bg-white/10 transition-all duration-200"
+                    activeClassName="bg-white/15 text-white font-semibold"
+                  >
+                    <BookOpen className="h-4 w-4" />
+                    <span>{t('خلفية الخطة', 'Plan Background')}</span>
                   </NavLink>
 
                   {/* Targets Dropdown - hidden temporarily */}
