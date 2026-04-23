@@ -3,8 +3,9 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import {
   BookOpen, Globe2, AlertTriangle,
   Shield, Brain, Users, FileText, TrendingUp, Zap, Search,
-  Building2, GraduationCap, Map, BarChart3
+  Building2, BarChart3
 } from 'lucide-react';
+import { BenchmarkWorldMap } from '@/components/strategy/BenchmarkWorldMap';
 
 // ─── Slide data ───────────────────────────────────────────────────────────────
 
@@ -283,34 +284,7 @@ export default function StrategyBackground() {
                   <p className="text-muted-foreground text-sm leading-relaxed text-center max-w-2xl mx-auto">
                     {t(slide.intro_ar!, slide.intro_en!)}
                   </p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                    {(slide as any).regions.map((region: any, i: number) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: i * 0.08 }}
-                        className="rounded-xl border bg-card overflow-hidden"
-                        style={{ borderColor: `${region.color}40` }}
-                      >
-                        <div className="px-4 py-2.5 flex items-center gap-2"
-                          style={{ background: `${region.color}12` }}>
-                          <Map className="h-4 w-4" style={{ color: region.color }} />
-                          <span className="text-sm font-bold" style={{ color: region.color }}>
-                            {t(region.label_ar, region.label_en)}
-                          </span>
-                        </div>
-                        <ul className="px-4 py-3 space-y-2">
-                          {region.institutions.map((inst: string, j: number) => (
-                            <li key={j} className="flex items-center gap-2 text-sm text-foreground">
-                              <GraduationCap className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
-                              {isRTL ? inst : region.institutions_en[j]}
-                            </li>
-                          ))}
-                        </ul>
-                      </motion.div>
-                    ))}
-                  </div>
+                  <BenchmarkWorldMap />
                 </>
               )}
 
