@@ -177,83 +177,52 @@ const slides = [
 
 export default function StrategyBackground() {
   const { t, isRTL } = useLanguage();
-  const [current, setCurrent] = useState(0);
-  const [direction, setDirection] = useState(1);
 
-  const go = useCallback((idx: number) => {
-    setDirection(idx > current ? 1 : -1);
-    setCurrent(idx);
-  }, [current]);
-
-  const prev = useCallback(() => go((current - 1 + slides.length) % slides.length), [current, go]);
-  const next = useCallback(() => go((current + 1) % slides.length), [current, go]);
-
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') isRTL ? prev() : next();
-      if (e.key === 'ArrowLeft') isRTL ? next() : prev();
-    };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
-  }, [isRTL, prev, next]);
-
-  const slide = slides[current];
-
-  const variants = {
-    enter: (d: number) => ({ opacity: 0, x: d > 0 ? 60 : -60 }),
-    center: { opacity: 1, x: 0 },
-    exit: (d: number) => ({ opacity: 0, x: d > 0 ? -60 : 60 }),
+  const scrollTo = (id: string) => {
+    document.getElementById(`section-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
     <div className="min-h-screen flex flex-col" dir={isRTL ? 'rtl' : 'ltr'}>
 
-      {/* Header strip */}
-      <div className="px-6 py-5 flex items-center justify-between border-b border-border/60 bg-card/60 backdrop-blur-sm">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: slide.gradient }}>
-            <slide.icon className="h-5 w-5 text-white" />
+      {/* Page header */}
+      <div className="px-6 py-6 border-b border-border/60 bg-card/60 backdrop-blur-sm">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: slides[0].gradient }}>
+              <BookOpen className="h-5 w-5 text-white" />
+            </div>
+            <div>
+              <h1 className="font-extrabold text-foreground text-xl leading-tight">
+                {t('خلفية الخطة الاستراتيجية', 'Strategic Plan Background')}
+              </h1>
+              <p className="text-xs text-muted-foreground">{t('2025 – 2029', '2025 – 2029')}</p>
+            </div>
           </div>
-          <div>
-            <h1 className="font-extrabold text-foreground text-lg leading-tight">
-              {t('خلفية الخطة الاستراتيجية', 'Strategic Plan Background')}
-            </h1>
-            <p className="text-xs text-muted-foreground">{t('2025 – 2029', '2025 – 2029')}</p>
-          </div>
-        </div>
 
-        {/* Dot indicators */}
-        <div className="flex items-center gap-2">
-          {slides.map((s, i) => (
-            <button
-              key={s.id}
-              onClick={() => go(i)}
-              className="transition-all duration-300 rounded-full"
-              style={{
-                width: i === current ? 28 : 8,
-                height: 8,
-                background: i === current ? slide.color : 'hsl(var(--muted-foreground)/40%)',
-              }}
-            />
-          ))}
+          {/* Section quick-nav */}
+          <div className="flex flex-wrap gap-2">
+            {slides.map((s) => (
+              <button
+                key={s.id}
+                onClick={() => scrollTo(s.id)}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border transition-all hover:shadow-sm"
+                style={{ borderColor: `${s.color}40`, background: `${s.color}10`, color: s.color }}
+              >
+                <s.icon className="h-3.5 w-3.5" />
+                {t(s.title_ar, s.title_en)}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Slide area */}
-      <div className="flex-1 relative overflow-hidden">
-        <AnimatePresence mode="wait" custom={direction}>
-          <motion.div
-            key={slide.id}
-            custom={direction}
-            variants={variants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{ duration: 0.35, ease: 'easeInOut' }}
-            className="absolute inset-0 overflow-y-auto"
-          >
+      {/* All sections rendered sequentially */}
+      <div className="flex-1">
+        {slides.map((slide) => (
+          <section key={slide.id} id={`section-${slide.id}`} className="scroll-mt-20">
             {/* Hero banner */}
-            <div className="relative overflow-hidden py-14 px-6" style={{ background: slide.gradient }}>
+            <div className="relative overflow-hidden py-12 px-6" style={{ background: slide.gradient }}>
               {/* subtle pattern */}
               <div className="absolute inset-0 opacity-10"
                 style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 20%, white 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
@@ -261,30 +230,21 @@ export default function StrategyBackground() {
               <div className="relative max-w-4xl mx-auto text-center">
                 <motion.div
                   initial={{ scale: 0.7, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: 0.1 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true, margin: '-100px' }}
+                  transition={{ duration: 0.4 }}
                   className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-5"
                   style={{ background: 'hsla(0,0%,100%,0.15)', border: '1px solid hsla(0,0%,100%,0.25)' }}
                 >
                   <slide.icon className="h-8 w-8 text-white" />
                 </motion.div>
 
-                <motion.h2
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.15 }}
-                  className="text-3xl md:text-4xl font-extrabold text-white mb-2"
-                >
+                <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-2">
                   {t(slide.title_ar, slide.title_en)}
-                </motion.h2>
-                <motion.p
-                  initial={{ y: 15, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                  className="text-white/70 text-base"
-                >
+                </h2>
+                <p className="text-white/70 text-base">
                   {t(slide.subtitle_ar, slide.subtitle_en)}
-                </motion.p>
+                </p>
               </div>
             </div>
 
