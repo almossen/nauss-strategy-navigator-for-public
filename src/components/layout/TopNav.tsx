@@ -273,6 +273,18 @@ export function TopNav() {
                 <span>{t('لوحة المعلومات', 'Dashboard')}</span>
               </NavLink>
 
+              {/* Mobile Strategy Background */}
+              <NavLink
+                to="/strategy-background"
+                end
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-white/65 hover:text-white hover:bg-white/10 transition-all duration-200"
+                activeClassName="bg-white/15 text-white font-semibold"
+              >
+                <BookOpen className="h-4 w-4" />
+                <span>{t('خلفية الخطة', 'Plan Background')}</span>
+              </NavLink>
+
               {/* Mobile Targets - hidden temporarily */}
               {false && targetItems.length > 0 && (
                 <>
