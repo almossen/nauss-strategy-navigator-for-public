@@ -111,13 +111,6 @@ export function BenchmarkWorldMap() {
               const [dx, dy] = inst.offset;
               const anchorEnd = dx < 0;
               const labelText = t(inst.name_ar, inst.name_en);
-              // approximate label width for background rect
-              const padX = 8;
-              const charW = 6.2;
-              const rectW = labelText.length * charW + padX * 2;
-              const rectH = 20;
-              const rectX = anchorEnd ? dx - rectW + 4 : dx - 4;
-              const rectY = dy - rectH / 2;
               return (
                 <Marker key={i} coordinates={inst.coordinates}>
                   {/* Pulsing ring */}
@@ -137,31 +130,23 @@ export function BenchmarkWorldMap() {
                     strokeDasharray="3 2"
                     opacity={0.85}
                   />
-                  {/* Label background pill */}
-                  <rect
-                    x={rectX}
-                    y={rectY}
-                    width={rectW}
-                    height={rectH}
-                    rx={6}
-                    fill="white"
-                    stroke={inst.color}
-                    strokeWidth={1}
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => setSelected(inst)}
-                  />
                   {/* Label text */}
                   <text
-                    x={anchorEnd ? rectX + rectW - padX : rectX + padX}
+                    x={dx}
                     y={dy + 4}
                     textAnchor={anchorEnd ? 'end' : 'start'}
                     style={{
                       fontSize: 10,
                       fontWeight: 700,
                       fill: inst.color,
-                      pointerEvents: 'none',
+                      cursor: 'pointer',
                       fontFamily: 'inherit',
+                      paintOrder: 'stroke',
+                      stroke: 'hsl(var(--background))',
+                      strokeWidth: 3,
+                      strokeLinejoin: 'round',
                     }}
+                    onClick={() => setSelected(inst)}
                   >
                     {labelText}
                   </text>
