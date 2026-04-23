@@ -194,7 +194,7 @@ export function BenchmarkWorldMap() {
 
             {visible.map((inst, i) => {
               const isActive = hovered?.name_en === inst.name_en || selected?.name_en === inst.name_en;
-              const [dx, dy] = inst.offset;
+              const [dx, dy] = adjustedOffsets[inst.name_en] ?? inst.offset;
               const anchorEnd = dx < 0;
               const labelText = t(inst.name_ar, inst.name_en);
               return (
