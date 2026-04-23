@@ -108,12 +108,65 @@ export function BenchmarkWorldMap() {
 
             {visible.map((inst, i) => {
               const isActive = hovered?.name_en === inst.name_en || selected?.name_en === inst.name_en;
+              const [dx, dy] = inst.offset;
+              const anchorEnd = dx < 0;
+              const labelText = t(inst.name_ar, inst.name_en);
+              // approximate label width for background rect
+              const padX = 8;
+              const charW = 6.2;
+              const rectW = labelText.length * charW + padX * 2;
+              const rectH = 20;
+              const rectX = anchorEnd ? dx - rectW + 4 : dx - 4;
+              const rectY = dy - rectH / 2;
               return (
                 <Marker key={i} coordinates={inst.coordinates}>
+                  {/* Pulsing ring */}
                   <circle r={10} fill={inst.color} opacity={0.15}>
                     <animate attributeName="r" from="6" to="14" dur="2s" repeatCount="indefinite" />
                     <animate attributeName="opacity" from="0.4" to="0" dur="2s" repeatCount="indefinite" />
                   </circle>
+
+                  {/* Leader line from marker to label */}
+                  <line
+                    x1={0}
+                    y1={0}
+                    x2={dx}
+                    y2={dy}
+                    stroke={inst.color}
+                    strokeWidth={1.2}
+                    strokeDasharray="3 2"
+                    opacity={0.85}
+                  />
+                  {/* Label background pill */}
+                  <rect
+                    x={rectX}
+                    y={rectY}
+                    width={rectW}
+                    height={rectH}
+                    rx={6}
+                    fill="white"
+                    stroke={inst.color}
+                    strokeWidth={1}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => setSelected(inst)}
+                  />
+                  {/* Label text */}
+                  <text
+                    x={anchorEnd ? rectX + rectW - padX : rectX + padX}
+                    y={dy + 4}
+                    textAnchor={anchorEnd ? 'end' : 'start'}
+                    style={{
+                      fontSize: 10,
+                      fontWeight: 700,
+                      fill: inst.color,
+                      pointerEvents: 'none',
+                      fontFamily: 'inherit',
+                    }}
+                  >
+                    {labelText}
+                  </text>
+
+                  {/* Marker dot (drawn last so it's on top) */}
                   <circle
                     r={isActive ? 6 : 4}
                     fill={inst.color}
