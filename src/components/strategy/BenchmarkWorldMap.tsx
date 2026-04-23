@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from 'react-simple-maps';
+import { ComposableMap, Geographies, Geography, Marker, Annotation, ZoomableGroup } from 'react-simple-maps';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { GraduationCap, MapPin, X } from 'lucide-react';
@@ -12,21 +12,22 @@ interface Institution {
   country_ar: string; country_en: string;
   region: string; color: string;
   coordinates: [number, number];
+  offset: [number, number]; // label offset in px [dx, dy]
 }
 
 const institutions: Institution[] = [
-  { name_ar: 'كلية الملك فهد الأمنية', name_en: 'King Fahd Security College', city_ar: 'الرياض', city_en: 'Riyadh', country_ar: 'المملكة العربية السعودية', country_en: 'Saudi Arabia', region: 'sa', color: '#2e6066', coordinates: [46.6753, 24.7136] },
-  { name_ar: 'كلية هنري لي', name_en: 'Henry Lee College', city_ar: 'نيو هيفن', city_en: 'New Haven', country_ar: 'الولايات المتحدة', country_en: 'United States', region: 'us', color: '#3b6bbf', coordinates: [-72.9279, 41.3083] },
-  { name_ar: 'كلية جون جاي', name_en: 'John Jay College', city_ar: 'نيويورك', city_en: 'New York', country_ar: 'الولايات المتحدة', country_en: 'United States', region: 'us', color: '#3b6bbf', coordinates: [-73.9911, 40.7706] },
-  { name_ar: 'مركز جورج سي مارشال', name_en: 'George C. Marshall Center', city_ar: 'غارميش', city_en: 'Garmisch', country_ar: 'ألمانيا', country_en: 'Germany', region: 'us', color: '#3b6bbf', coordinates: [11.0958, 47.4920] },
-  { name_ar: 'CEPOL', name_en: 'CEPOL', city_ar: 'بودابست', city_en: 'Budapest', country_ar: 'المجر', country_en: 'Hungary', region: 'eu', color: '#7c3d9e', coordinates: [19.0402, 47.4979] },
-  { name_ar: "كينجز كوليدج لندن", name_en: "King's College London", city_ar: 'لندن', city_en: 'London', country_ar: 'المملكة المتحدة', country_en: 'United Kingdom', region: 'eu', color: '#7c3d9e', coordinates: [-0.1163, 51.5114] },
-  { name_ar: 'جامعة ساسكس', name_en: 'University of Sussex', city_ar: 'برايتون', city_en: 'Brighton', country_ar: 'المملكة المتحدة', country_en: 'United Kingdom', region: 'eu', color: '#7c3d9e', coordinates: [-0.0875, 50.8662] },
-  { name_ar: 'NFSU', name_en: 'NFSU', city_ar: 'غاندي ناغار', city_en: 'Gandhinagar', country_ar: 'الهند', country_en: 'India', region: 'as', color: '#c0392b', coordinates: [72.6369, 23.2156] },
-  { name_ar: 'جامعة الشعب الصيني للأمن العام', name_en: "Chinese People's Public Security University", city_ar: 'بكين', city_en: 'Beijing', country_ar: 'الصين', country_en: 'China', region: 'as', color: '#c0392b', coordinates: [116.4074, 39.9042] },
-  { name_ar: 'جامعة الشرطة الكورية', name_en: 'Korean National Police University', city_ar: 'أسان', city_en: 'Asan', country_ar: 'كوريا الجنوبية', country_en: 'South Korea', region: 'as', color: '#c0392b', coordinates: [127.0042, 36.7898] },
-  { name_ar: 'الجامعة الوطنية اللبنانية للعلوم الأمنية', name_en: 'Lebanese National University of Security Sciences', city_ar: 'بيروت', city_en: 'Beirut', country_ar: 'لبنان', country_en: 'Lebanon', region: 'me', color: '#16a085', coordinates: [35.5018, 33.8938] },
-  { name_ar: 'معهد دراسات الدفاع الوطني', name_en: 'National Defense Studies Institute', city_ar: 'أبوظبي', city_en: 'Abu Dhabi', country_ar: 'الإمارات', country_en: 'UAE', region: 'me', color: '#16a085', coordinates: [54.3773, 24.4539] },
+  { name_ar: 'كلية الملك فهد الأمنية', name_en: 'King Fahd Security College', city_ar: 'الرياض', city_en: 'Riyadh', country_ar: 'المملكة العربية السعودية', country_en: 'Saudi Arabia', region: 'sa', color: '#2e6066', coordinates: [46.6753, 24.7136], offset: [40, 30] },
+  { name_ar: 'كلية هنري لي', name_en: 'Henry Lee College', city_ar: 'نيو هيفن', city_en: 'New Haven', country_ar: 'الولايات المتحدة', country_en: 'United States', region: 'us', color: '#3b6bbf', coordinates: [-72.9279, 41.3083], offset: [-60, -30] },
+  { name_ar: 'كلية جون جاي', name_en: 'John Jay College', city_ar: 'نيويورك', city_en: 'New York', country_ar: 'الولايات المتحدة', country_en: 'United States', region: 'us', color: '#3b6bbf', coordinates: [-73.9911, 40.7706], offset: [-90, 30] },
+  { name_ar: 'مركز جورج سي مارشال', name_en: 'George C. Marshall Center', city_ar: 'غارميش', city_en: 'Garmisch', country_ar: 'ألمانيا', country_en: 'Germany', region: 'us', color: '#3b6bbf', coordinates: [11.0958, 47.4920], offset: [-50, -40] },
+  { name_ar: 'CEPOL', name_en: 'CEPOL', city_ar: 'بودابست', city_en: 'Budapest', country_ar: 'المجر', country_en: 'Hungary', region: 'eu', color: '#7c3d9e', coordinates: [19.0402, 47.4979], offset: [40, -25] },
+  { name_ar: "كينجز كوليدج لندن", name_en: "King's College London", city_ar: 'لندن', city_en: 'London', country_ar: 'المملكة المتحدة', country_en: 'United Kingdom', region: 'eu', color: '#7c3d9e', coordinates: [-0.1163, 51.5114], offset: [-80, -45] },
+  { name_ar: 'جامعة ساسكس', name_en: 'University of Sussex', city_ar: 'برايتون', city_en: 'Brighton', country_ar: 'المملكة المتحدة', country_en: 'United Kingdom', region: 'eu', color: '#7c3d9e', coordinates: [-0.0875, 50.8662], offset: [-70, 35] },
+  { name_ar: 'NFSU', name_en: 'NFSU', city_ar: 'غاندي ناغار', city_en: 'Gandhinagar', country_ar: 'الهند', country_en: 'India', region: 'as', color: '#c0392b', coordinates: [72.6369, 23.2156], offset: [40, 35] },
+  { name_ar: 'جامعة الشعب الصيني للأمن العام', name_en: "Chinese People's Public Security University", city_ar: 'بكين', city_en: 'Beijing', country_ar: 'الصين', country_en: 'China', region: 'as', color: '#c0392b', coordinates: [116.4074, 39.9042], offset: [50, -35] },
+  { name_ar: 'جامعة الشرطة الكورية', name_en: 'Korean National Police University', city_ar: 'أسان', city_en: 'Asan', country_ar: 'كوريا الجنوبية', country_en: 'South Korea', region: 'as', color: '#c0392b', coordinates: [127.0042, 36.7898], offset: [60, 30] },
+  { name_ar: 'الجامعة الوطنية اللبنانية للعلوم الأمنية', name_en: 'Lebanese National University of Security Sciences', city_ar: 'بيروت', city_en: 'Beirut', country_ar: 'لبنان', country_en: 'Lebanon', region: 'me', color: '#16a085', coordinates: [35.5018, 33.8938], offset: [-60, -35] },
+  { name_ar: 'معهد دراسات الدفاع الوطني', name_en: 'National Defense Studies Institute', city_ar: 'أبوظبي', city_en: 'Abu Dhabi', country_ar: 'الإمارات', country_en: 'UAE', region: 'me', color: '#16a085', coordinates: [54.3773, 24.4539], offset: [50, 25] },
 ];
 
 const regions = [
