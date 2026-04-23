@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from 'react-simple-maps';
+import { geoEqualEarth } from 'd3-geo';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { GraduationCap, MapPin, X } from 'lucide-react';
@@ -43,8 +44,87 @@ export function BenchmarkWorldMap() {
   const [hovered, setHovered] = useState<Institution | null>(null);
   const [selected, setSelected] = useState<Institution | null>(null);
   const [activeRegion, setActiveRegion] = useState<string | null>(null);
+  const [zoom, setZoom] = useState(1);
 
   const visible = activeRegion ? institutions.filter(i => i.region === activeRegion) : institutions;
+
+  // Map config (must match ComposableMap projection + ZoomableGroup center)
+  const MAP_W = 800;
+  const MAP_H = 450;
+  const PROJ_SCALE = 165;
+
+  // Compute collision-free label offsets per zoom level.
+  // Strategy: project each marker to screen px (accounting for zoom), then iteratively
+  // push apart labels that overlap. Convert resolved screen offsets back to SVG-local
+  // offsets that Marker children expect (which are NOT scaled by zoom).
+  const adjustedOffsets = useMemo(() => {
+    const projection = geoEqualEarth().scale(PROJ_SCALE).translate([MAP_W / 2, MAP_H / 2]);
+    const charW = 5.6; // approx px per char at fontSize 10, fontWeight 700
+    const labelH = 14;
+
+    type Box = {
+      key: string;
+      mx: number; my: number; // marker screen px
+      lx: number; ly: number; // label center screen px
+      w: number; h: number;
+      ox: number; oy: number; // initial offset in screen px (post-zoom)
+    };
+
+    const boxes: Box[] = visible.map(inst => {
+      const projected = projection(inst.coordinates) ?? [0, 0];
+      // Markers are positioned in unscaled SVG coords; their screen position scales w/ zoom.
+      const mx = projected[0] * zoom;
+      const my = projected[1] * zoom;
+      const ox = inst.offset[0]; // label offset in screen px (does NOT scale)
+      const oy = inst.offset[1];
+      const text = t(inst.name_ar, inst.name_en);
+      const w = text.length * charW + 8;
+      return {
+        key: inst.name_en,
+        mx, my,
+        lx: mx + ox,
+        ly: my + oy,
+        w, h: labelH,
+        ox, oy,
+      };
+    });
+
+    // Iterative push-apart
+    const ITER = 60;
+    const PAD = 4;
+    for (let it = 0; it < ITER; it++) {
+      let moved = false;
+      for (let i = 0; i < boxes.length; i++) {
+        for (let j = i + 1; j < boxes.length; j++) {
+          const a = boxes[i], b = boxes[j];
+          const dx = b.lx - a.lx;
+          const dy = b.ly - a.ly;
+          const minX = (a.w + b.w) / 2 + PAD;
+          const minY = (a.h + b.h) / 2 + PAD;
+          const overlapX = minX - Math.abs(dx);
+          const overlapY = minY - Math.abs(dy);
+          if (overlapX > 0 && overlapY > 0) {
+            moved = true;
+            // Push along the smaller overlap axis
+            if (overlapY < overlapX) {
+              const push = (overlapY / 2) * (dy >= 0 ? 1 : -1);
+              a.ly -= push; a.oy -= push;
+              b.ly += push; b.oy += push;
+            } else {
+              const push = (overlapX / 2) * (dx >= 0 ? 1 : -1);
+              a.lx -= push; a.ox -= push;
+              b.lx += push; b.ox += push;
+            }
+          }
+        }
+      }
+      if (!moved) break;
+    }
+
+    const out: Record<string, [number, number]> = {};
+    boxes.forEach(b => { out[b.key] = [b.ox, b.oy]; });
+    return out;
+  }, [visible, zoom, t]);
 
   return (
     <div className="space-y-4">
@@ -89,7 +169,13 @@ export function BenchmarkWorldMap() {
           projectionConfig={{ scale: 165 }}
           style={{ width: '100%', height: 'auto', maxHeight: 560 }}
         >
-          <ZoomableGroup center={[20, 25]} zoom={1} minZoom={1} maxZoom={5}>
+          <ZoomableGroup
+            center={[20, 25]}
+            zoom={1}
+            minZoom={1}
+            maxZoom={5}
+            onMove={({ zoom: z }) => setZoom(z)}
+          >
             <Geographies geography={GEO_URL}>
               {({ geographies }) =>
                 geographies.map(geo => (
