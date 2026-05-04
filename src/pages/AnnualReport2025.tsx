@@ -238,20 +238,6 @@ export default function AnnualReport2025() {
             </p>
           </div>
 
-          <div className="grid grid-cols-3 gap-3 mt-6">
-            {[
-              { n: '01', t_ar: 'الشمولية', t_en: 'Comprehensiveness', d_ar: 'يغطي جميع المرتكزات والمبادرات والمؤشرات.', d_en: 'Covers all pillars, initiatives, and KPIs.' },
-              { n: '02', t_ar: 'الموضوعية', t_en: 'Objectivity', d_ar: 'يستند إلى بيانات موثّقة ومستهدفات معتمدة.', d_en: 'Based on verified data and approved targets.' },
-              { n: '03', t_ar: 'التوجّه القيادي', t_en: 'Leadership Focus', d_ar: 'مُصمَّم لدعم اتخاذ القرار التنفيذي.', d_en: 'Designed to support executive decision-making.' },
-            ].map((c, i) => (
-              <div key={i} className="rounded-xl p-4 border border-border bg-muted/20">
-                <div className="text-2xl font-black mb-2" style={{ color: 'hsl(186 37% 29%)' }}>{c.n}</div>
-                <div className="font-bold text-sm mb-1">{t(c.t_ar, c.t_en)}</div>
-                <div className="text-xs text-muted-foreground leading-relaxed">{t(c.d_ar, c.d_en)}</div>
-              </div>
-            ))}
-          </div>
-
           <ReportFooter pageNum={2} />
         </section>
 
