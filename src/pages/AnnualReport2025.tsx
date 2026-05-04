@@ -511,7 +511,7 @@ export default function AnnualReport2025() {
               </div>
             )}
 
-            <ReportFooter pageNum={4 + idx} />
+            <ReportFooter pageNum={5 + idx} />
           </section>
         ))}
 
@@ -565,7 +565,7 @@ export default function AnnualReport2025() {
             </div>
           </div>
 
-          <ReportFooter pageNum={4 + pillarStats.length} />
+          <ReportFooter pageNum={5 + pillarStats.length} />
         </section>
       </div>
     </>
