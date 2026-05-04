@@ -131,6 +131,10 @@ export default function AnnualReport2025() {
           padding-bottom: 0.6rem; margin-bottom: 1rem;
           border-bottom: 2px solid hsl(186 37% 29%);
         }
+        .strategic-map-print .section-header { display: none !important; }
+        .strategic-map-print > div > div { padding: 0 !important; border: none !important; box-shadow: none !important; background: transparent !important; }
+        .strategic-map-print svg { width: 100% !important; height: auto !important; max-width: none !important; }
+        .strategic-map-print .max-w-\\[960px\\] { max-width: 100% !important; }
       `}</style>
 
       <div className="bg-muted/30 min-h-screen py-6 px-4" dir={isRTL ? 'rtl' : 'ltr'} style={{ fontFamily: isRTL ? 'Tajawal, sans-serif' : 'Inter, sans-serif' }}>
