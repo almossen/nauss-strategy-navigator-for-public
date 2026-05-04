@@ -259,7 +259,7 @@ export default function AnnualReport2025() {
               <div className="col-span-2 grid grid-cols-3 gap-3">
                 <MiniStat label={t('تحقق المشاريع', 'Projects Progress')} value={`${Math.round(pillarsWithProjects.reduce((s, p) => s + p.projectsAchievement, 0) / Math.max(pillarsWithProjects.length, 1))}%`} />
                 <MiniStat label={t('أداء المؤشرات', 'KPI Performance')} value={`${Math.round(pillarStats.filter(p => p.kpis.length).reduce((s, p) => s + p.kpiScore, 0) / Math.max(pillarStats.filter(p => p.kpis.length).length, 1))}%`} />
-                <MiniStat label={t('المرتكزات النشطة', 'Active Pillars')} value={`${pillarStats.length}`} />
+                <MiniStat label={t('عدد المرتكزات', 'Number of Pillars')} value={`${pillarStats.length}`} />
               </div>
             </div>
           </div>
