@@ -312,7 +312,7 @@ export default function AnnualReport2025() {
             </div>
           )}
 
-          <ReportFooter pageNum={2} />
+          <ReportFooter pageNum={3} />
         </section>
 
         {/* ===== PAGE 4: VISION & STRATEGIC CONTEXT ===== */}
