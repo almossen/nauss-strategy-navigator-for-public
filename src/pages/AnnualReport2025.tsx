@@ -192,6 +192,69 @@ export default function AnnualReport2025() {
           </div>
         </section>
 
+        {/* ===== PAGE 2: INTRODUCTION ===== */}
+        <section className="report-page">
+          <ReportHeader title={t('المقدمة', 'Introduction')} subtitle={t('كلمة افتتاحية وتمهيد للتقرير', 'Opening Statement and Report Preface')} />
+
+          <div className="rounded-2xl p-6 mb-5 text-white relative overflow-hidden" style={{ background: 'linear-gradient(135deg, hsl(212 36% 18%), hsl(186 37% 28%))' }}>
+            <div className="absolute -end-12 -top-12 w-44 h-44 rounded-full opacity-20" style={{ background: 'hsl(37,38%,63%)' }} />
+            <div className="relative flex items-start gap-4">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'hsla(37,38%,63%,0.25)', border: '1px solid hsla(37,38%,63%,0.4)' }}>
+                <BookOpen className="h-6 w-6" style={{ color: 'hsl(37,38%,80%)' }} />
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wider opacity-80 mb-1">{t('تقديم', 'Foreword')}</div>
+                <h3 className="text-2xl font-bold mb-2">
+                  {t('عام من التحول والإنجاز', 'A Year of Transformation and Achievement')}
+                </h3>
+                <p className="text-sm opacity-90 leading-relaxed">
+                  {t(
+                    'يأتي هذا التقرير ليُلقي الضوء على ما تحقق خلال السنة الأولى من الخطة الاستراتيجية 2025-2029، مُترجِماً الرؤية إلى مبادرات ومشاريع ومؤشرات أداء قابلة للقياس.',
+                    'This report highlights what has been achieved during the first year of the 2025-2029 Strategic Plan, translating vision into measurable initiatives, projects, and performance indicators.'
+                  )}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-4 text-sm leading-loose text-foreground">
+            <p>
+              {t(
+                'تُمثل الخطة الاستراتيجية 2025-2029 خارطة طريق طموحة تُجسّد تطلعات جامعة نايف العربية للعلوم الأمنية نحو الريادة الأكاديمية والبحثية في مجالات الأمن والعدالة الجنائية على المستويين العربي والدولي. وتنبثق هذه الخطة من رؤية ورسالة وقيم الجامعة، وتستند إلى أُطر علمية ومنهجية تضمن التحول من الطموح إلى الإنجاز.',
+                'The 2025-2029 Strategic Plan represents an ambitious roadmap that embodies Naif Arab University’s aspirations toward academic and research leadership in the fields of security and criminal justice at both the Arab and international levels. The plan stems from the university’s vision, mission, and values, and is grounded in scientific and methodological frameworks that ensure the shift from ambition to achievement.'
+              )}
+            </p>
+            <p>
+              {t(
+                'يُقدّم هذا التقرير قراءةً تحليليةً وموضوعيةً لمستوى الإنجاز السنوي، من خلال استعراض المؤشرات الرئيسية، ونسب تحقق المستهدفات، وأبرز المشاريع المنفّذة والمنطلقة، وأهم الإنجازات النوعية التي شكّلت ملامح عام 2025.',
+                'This report provides an analytical and objective reading of the annual achievement level by reviewing key performance indicators, target accomplishment rates, the most important launched and completed projects, and the qualitative milestones that shaped 2025.'
+              )}
+            </p>
+            <p>
+              {t(
+                'كما يهدف التقرير إلى تمكين القيادات من اتخاذ قرارات مستنيرة مبنية على البيانات، ورصد الفجوات، وتوجيه الموارد نحو الأولويات، تحقيقًا للتكامل بين المرتكزات الاستراتيجية والممكّنات التنفيذية في مسيرة الجامعة نحو 2029.',
+                'It also aims to empower leadership to make informed, data-driven decisions, identify gaps, and direct resources toward priorities — fostering integration between strategic pillars and executive enablers as the university progresses toward 2029.'
+              )}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-3 gap-3 mt-6">
+            {[
+              { n: '01', t_ar: 'الشمولية', t_en: 'Comprehensiveness', d_ar: 'يغطي جميع المرتكزات والمبادرات والمؤشرات.', d_en: 'Covers all pillars, initiatives, and KPIs.' },
+              { n: '02', t_ar: 'الموضوعية', t_en: 'Objectivity', d_ar: 'يستند إلى بيانات موثّقة ومستهدفات معتمدة.', d_en: 'Based on verified data and approved targets.' },
+              { n: '03', t_ar: 'التوجّه القيادي', t_en: 'Leadership Focus', d_ar: 'مُصمَّم لدعم اتخاذ القرار التنفيذي.', d_en: 'Designed to support executive decision-making.' },
+            ].map((c, i) => (
+              <div key={i} className="rounded-xl p-4 border border-border bg-muted/20">
+                <div className="text-2xl font-black mb-2" style={{ color: 'hsl(186 37% 29%)' }}>{c.n}</div>
+                <div className="font-bold text-sm mb-1">{t(c.t_ar, c.t_en)}</div>
+                <div className="text-xs text-muted-foreground leading-relaxed">{t(c.d_ar, c.d_en)}</div>
+              </div>
+            ))}
+          </div>
+
+          <ReportFooter pageNum={2} />
+        </section>
+
         {/* ===== PAGE 2: EXECUTIVE SUMMARY ===== */}
         <section className="report-page">
           <ReportHeader title={t('الملخص التنفيذي', 'Executive Summary')} subtitle={t('نظرة شاملة على الأداء السنوي', 'A complete view of annual performance')} />
