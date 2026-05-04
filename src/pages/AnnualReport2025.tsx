@@ -431,85 +431,92 @@ export default function AnnualReport2025() {
               )}
             </div>
 
-            {/* Projects */}
-            {ps.all.length > 0 && (
-              <div className="mb-4">
-                <h4 className="font-bold text-sm mb-2 flex items-center gap-2">
-                  <Building2 className="h-4 w-4" style={{ color: ps.pillar.color || 'hsl(186 37% 29%)' }} />
-                  {t('المشاريع', 'Projects')} ({ps.all.length})
-                </h4>
-                <table className="w-full text-xs border-collapse">
-                  <thead>
-                    <tr style={{ background: 'hsl(186 20% 92%)' }}>
-                      <th className="p-2 text-start font-bold">{t('المشروع', 'Project')}</th>
-                      <th className="p-2 text-center font-bold w-20">{t('الحالة', 'Status')}</th>
-                      <th className="p-2 text-center font-bold w-16">{t('الوزن', 'Weight')}</th>
-                      <th className="p-2 text-center font-bold w-24">{t('انتهاء', 'End')}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {ps.all.slice(0, 12).map((p: any) => (
-                      <tr key={p.id} className="border-b border-border">
-                        <td className="p-2">{t(p.name_ar, p.name_en)}</td>
-                        <td className="p-2 text-center">
-                          <StatusBadge status={normalize(p.status)} t={t} />
-                        </td>
-                        <td className="p-2 text-center font-bold">{p.weight || 0}%</td>
-                        <td className="p-2 text-center text-muted-foreground">{p.end_date?.slice(0, 7) || '—'}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                {ps.all.length > 12 && (
-                  <div className="text-xs text-muted-foreground mt-2 italic">
-                    + {ps.all.length - 12} {t('مشاريع إضافية', 'more projects')}
-                  </div>
-                )}
-              </div>
-            )}
+            {/* Group projects & KPIs by initiative */}
+            {(() => {
+              const pillarInitiatives = (initiatives || []).filter((it: any) => it.pillar_id === ps.pillar.id);
+              const groups = pillarInitiatives.map((init: any) => ({
+                init,
+                projects: ps.all.filter((p: any) => p.initiative_id === init.id),
+                kpis: ps.kpis.filter((k: any) => k.initiative_id === init.id),
+              })).filter(g => g.projects.length > 0 || g.kpis.length > 0);
 
-            {/* KPIs */}
-            {ps.kpis.length > 0 && (
-              <div>
-                <h4 className="font-bold text-sm mb-2 flex items-center gap-2">
-                  <Target className="h-4 w-4" style={{ color: ps.pillar.color || 'hsl(186 37% 29%)' }} />
-                  {t('مؤشرات الأداء', 'KPIs')} ({ps.kpis.length})
-                </h4>
-                <table className="w-full text-xs border-collapse">
-                  <thead>
-                    <tr style={{ background: 'hsl(186 20% 92%)' }}>
-                      <th className="p-2 text-start font-bold">{t('المؤشر', 'KPI')}</th>
-                      <th className="p-2 text-center font-bold w-16">{t('المستهدف', 'Target')}</th>
-                      <th className="p-2 text-center font-bold w-16">{t('الفعلي', 'Actual')}</th>
-                      <th className="p-2 text-center font-bold w-20">{t('التحقق', 'Achievement')}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {ps.kpis.slice(0, 10).map((k: any) => {
-                      const pct = Math.round(kpiAchievementPct(k));
-                      const achieved = pct >= 100;
-                      return (
-                        <tr key={k.id} className="border-b border-border">
-                          <td className="p-2">{t(k.name_ar, k.name_en)}</td>
-                          <td className="p-2 text-center font-bold">{k.target_2025 || '—'}</td>
-                          <td className="p-2 text-center font-bold">{actualsMap[k.id] || '—'}</td>
-                          <td className="p-2 text-center">
-                            <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold ${achieved ? 'bg-green-100 text-green-800' : pct >= 70 ? 'bg-amber-100 text-amber-800' : 'bg-red-100 text-red-800'}`}>
-                              {pct}%
-                            </span>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-                {ps.kpis.length > 10 && (
-                  <div className="text-xs text-muted-foreground mt-2 italic">
-                    + {ps.kpis.length - 10} {t('مؤشرات إضافية', 'more KPIs')}
+              if (groups.length === 0) {
+                return (
+                  <div className="text-xs text-muted-foreground italic text-center py-6">
+                    {t('لا توجد مبادرات لعرضها', 'No initiatives to display')}
                   </div>
-                )}
-              </div>
-            )}
+                );
+              }
+
+              return (
+                <div className="space-y-4">
+                  {groups.map(({ init, projects: gProjects, kpis: gKpis }) => (
+                    <div key={init.id} className="rounded-xl border border-border overflow-hidden">
+                      {/* Initiative header */}
+                      <div className="px-3 py-2 flex items-center gap-2" style={{ background: 'hsl(186 20% 94%)', borderInlineStart: `4px solid ${ps.pillar.color || 'hsl(186 37% 29%)'}` }}>
+                        <Sparkles className="h-3.5 w-3.5" style={{ color: ps.pillar.color || 'hsl(186 37% 29%)' }} />
+                        <div className="font-bold text-xs flex-1">{t(init.name_ar, init.name_en)}</div>
+                        <div className="text-[10px] text-muted-foreground">
+                          {gProjects.length} {t('مشروع', 'proj')} · {gKpis.length} {t('مؤشر', 'KPI')}
+                        </div>
+                      </div>
+
+                      {/* Projects under initiative */}
+                      {gProjects.length > 0 && (
+                        <div className="px-3 pt-2">
+                          <div className="flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1">
+                            <Building2 className="h-3 w-3" />
+                            {t('المشاريع', 'Projects')}
+                          </div>
+                          <table className="w-full text-[11px] border-collapse">
+                            <tbody>
+                              {gProjects.map((p: any) => (
+                                <tr key={p.id} className="border-b border-border last:border-0">
+                                  <td className="py-1.5">{t(p.name_ar, p.name_en)}</td>
+                                  <td className="py-1.5 text-center w-20"><StatusBadge status={normalize(p.status)} t={t} /></td>
+                                  <td className="py-1.5 text-center w-12 font-bold">{p.weight || 0}%</td>
+                                  <td className="py-1.5 text-center w-20 text-muted-foreground">{p.end_date?.slice(0, 7) || '—'}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+
+                      {/* KPIs under initiative */}
+                      {gKpis.length > 0 && (
+                        <div className="px-3 pt-2 pb-3">
+                          <div className="flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1">
+                            <Target className="h-3 w-3" />
+                            {t('مؤشرات الأداء', 'KPIs')}
+                          </div>
+                          <table className="w-full text-[11px] border-collapse">
+                            <tbody>
+                              {gKpis.map((k: any) => {
+                                const pct = Math.round(kpiAchievementPct(k));
+                                const achieved = pct >= 100;
+                                return (
+                                  <tr key={k.id} className="border-b border-border last:border-0">
+                                    <td className="py-1.5">{t(k.name_ar, k.name_en)}</td>
+                                    <td className="py-1.5 text-center w-14 font-bold">{k.target_2025 || '—'}</td>
+                                    <td className="py-1.5 text-center w-14 font-bold">{actualsMap[k.id] || '—'}</td>
+                                    <td className="py-1.5 text-center w-16">
+                                      <span className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-bold ${achieved ? 'bg-green-100 text-green-800' : pct >= 70 ? 'bg-amber-100 text-amber-800' : 'bg-red-100 text-red-800'}`}>
+                                        {pct}%
+                                      </span>
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
 
             <ReportFooter pageNum={5 + idx} />
           </section>
