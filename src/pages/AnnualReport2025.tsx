@@ -329,8 +329,8 @@ export default function AnnualReport2025() {
                 <Map className="h-5 w-5" style={{ color: 'hsl(186 37% 29%)' }} />
                 <h3 className="text-lg font-bold">{t('الخريطة الاستراتيجية', 'Strategic Map')}</h3>
               </div>
-              <div className="rounded-xl border border-border bg-white p-2 flex justify-center" style={{ maxHeight: '420px', overflow: 'hidden' }}>
-                <div style={{ transform: 'scale(0.55)', transformOrigin: 'top center', width: '100%' }}>
+              <div className="rounded-xl border border-border bg-white overflow-hidden" style={{ height: '780px' }}>
+                <div style={{ width: '1400px', height: '1400px', transform: 'scale(0.55)', transformOrigin: 'top left', marginLeft: 'calc(50% - 385px)' }}>
                   <StrategicMap pillars={pillars as any} goals={goals as any} initiatives={initiatives as any} />
                 </div>
               </div>
