@@ -315,7 +315,7 @@ export default function AnnualReport2025() {
           <ReportFooter pageNum={2} />
         </section>
 
-        {/* ===== PAGE 3: VISION & STRATEGIC CONTEXT ===== */}
+        {/* ===== PAGE 4: VISION & STRATEGIC CONTEXT ===== */}
         <section className="report-page">
           <ReportHeader title={t('السياق الاستراتيجي', 'Strategic Context')} subtitle={t('الرؤية والرسالة وأبعاد الخطة', 'Vision, Mission, and Plan Dimensions')} />
 
@@ -336,6 +336,20 @@ export default function AnnualReport2025() {
               </div>
             ))}
           </div>
+
+          {pillars && goals && initiatives && (
+            <div className="mb-6">
+              <div className="section-title-bar">
+                <Map className="h-5 w-5" style={{ color: 'hsl(186 37% 29%)' }} />
+                <h3 className="text-lg font-bold">{t('الخريطة الاستراتيجية', 'Strategic Map')}</h3>
+              </div>
+              <div className="rounded-xl border border-border bg-white p-2 flex justify-center" style={{ maxHeight: '420px', overflow: 'hidden' }}>
+                <div style={{ transform: 'scale(0.55)', transformOrigin: 'top center', width: '100%' }}>
+                  <StrategicMap pillars={pillars as any} goals={goals as any} initiatives={initiatives as any} />
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="section-title-bar">
             <BarChart3 className="h-5 w-5" style={{ color: 'hsl(186 37% 29%)' }} />
@@ -378,7 +392,7 @@ export default function AnnualReport2025() {
             </tbody>
           </table>
 
-          <ReportFooter pageNum={3} />
+          <ReportFooter pageNum={4} />
         </section>
 
         {/* ===== PAGES 4+: ONE PAGE PER PILLAR ===== */}
