@@ -1,13 +1,14 @@
 import { useEffect, useMemo } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { usePillars, useAllProjects, useUniversityInfo } from '@/hooks/useStrategyData';
-import { useAllKPIs } from '@/hooks/useAllKPIs';
+import { usePillars, useAllProjects, useUniversityInfo, useInitiatives } from '@/hooks/useStrategyData';
+import { useAllKPIs, useAllStrategicGoals } from '@/hooks/useAllKPIs';
 import { useAchievementSettingByYear, useKpiActuals } from '@/hooks/useAchievementSettings';
 import { DISTRIBUTION_DATA, OVERALL_DISTRIBUTION } from '@/constants/distributionData';
 import { Button } from '@/components/ui/button';
+import { StrategicMap } from '@/components/dashboard/StrategicMap';
 import {
   Printer, CheckCircle2, Clock, AlertTriangle, Target, TrendingUp, TrendingDown,
-  Trophy, Sparkles, BarChart3, Building2, Eye, Compass, Heart, FileText
+  Trophy, Sparkles, BarChart3, Building2, Eye, Compass, Heart, FileText, BookOpen, Map
 } from 'lucide-react';
 
 const YEAR = 2025;
@@ -17,6 +18,8 @@ export default function AnnualReport2025() {
   const { data: pillars } = usePillars();
   const { data: projects } = useAllProjects();
   const { data: kpis } = useAllKPIs();
+  const { data: goals } = useAllStrategicGoals();
+  const { data: initiatives } = useInitiatives();
   const { data: settings } = useAchievementSettingByYear(YEAR);
   const { data: kpiActuals } = useKpiActuals(YEAR);
   const { data: uni } = useUniversityInfo();
