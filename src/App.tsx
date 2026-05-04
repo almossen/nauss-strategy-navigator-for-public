@@ -12,6 +12,7 @@ import HierarchyView from "./pages/HierarchyView";
 import TimelineView from "./pages/TimelineView";
 import ControlPanel from "./pages/ControlPanel";
 import Achievements2025 from "./pages/Achievements2025";
+import AnnualReport2025 from "./pages/AnnualReport2025";
 import Achievements2026 from "./pages/Achievements2026";
 import Achievements2027 from "./pages/Achievements2027";
 import Achievements2028 from "./pages/Achievements2028";
@@ -44,6 +45,7 @@ const App = () => (
                 <Route path="/targets-2028" element={<TargetsPage year={2028} />} />
                 <Route path="/targets-2029" element={<TargetsPage year={2029} />} />
                 <Route path="/achievements-2025" element={<Achievements2025 />} />
+                <Route path="/report-2025" element={<AnnualReport2025 />} />
                 <Route path="/achievements-2026" element={<Achievements2026 />} />
                 <Route path="/achievements-2027" element={<Achievements2027 />} />
                 <Route path="/achievements-2028" element={<Achievements2028 />} />
