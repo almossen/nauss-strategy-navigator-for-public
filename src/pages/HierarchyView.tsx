@@ -315,9 +315,6 @@ export default function HierarchyView() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-bold text-[13px] text-foreground leading-snug">{t(init.name_ar, init.name_en)}</p>
-                        {(init.description_ar || init.description_en) && (
-                          <p className="text-[11px] text-muted-foreground mt-1 line-clamp-1 leading-relaxed">{t(init.description_ar, init.description_en)}</p>
-                        )}
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         <span className="text-xs font-extrabold px-2.5 py-1 rounded-lg bg-muted/60" style={{ color }}>{projCount}</span>
