@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { EditModeProvider } from "@/contexts/EditModeContext";
 import { AppLayout } from "@/components/layout/AppLayout";
+import { SitePasswordGate } from "@/components/auth/SitePasswordGate";
 import Dashboard from "./pages/Dashboard";
 import PillarPage from "./pages/PillarPage";
 import HierarchyView from "./pages/HierarchyView";
@@ -31,6 +32,7 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
+          <SitePasswordGate>
           <BrowserRouter>
             <AppLayout>
               <Routes>
@@ -56,6 +58,7 @@ const App = () => (
               </Routes>
             </AppLayout>
           </BrowserRouter>
+          </SitePasswordGate>
         </TooltipProvider>
       </EditModeProvider>
     </LanguageProvider>
