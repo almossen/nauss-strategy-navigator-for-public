@@ -12,6 +12,7 @@ import PillarPage from "./pages/PillarPage";
 import HierarchyView from "./pages/HierarchyView";
 import TimelineView from "./pages/TimelineView";
 import ControlPanel from "./pages/ControlPanel";
+import { AdminPasswordGate } from "@/components/auth/AdminPasswordGate";
 import Achievements2025 from "./pages/Achievements2025";
 import AnnualReport2025 from "./pages/AnnualReport2025";
 import Achievements2026 from "./pages/Achievements2026";
@@ -40,7 +41,7 @@ const App = () => (
                 <Route path="/strategy-background" element={<StrategyBackground />} />
                 <Route path="/hierarchy" element={<HierarchyView />} />
                 <Route path="/timeline" element={<TimelineView />} />
-                <Route path="/admin" element={<ControlPanel />} />
+                <Route path="/admin" element={<AdminPasswordGate><ControlPanel /></AdminPasswordGate>} />
                 <Route path="/targets-2025" element={<TargetsPage year={2025} />} />
                 <Route path="/targets-2026" element={<TargetsPage year={2026} />} />
                 <Route path="/targets-2027" element={<TargetsPage year={2027} />} />
