@@ -4,6 +4,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useAchievementSettings } from '@/hooks/useAchievementSettings';
 import { useTargetSettings } from '@/hooks/useTargetSettings';
 import { usePillars } from '@/hooks/useStrategyData';
+import { usePageSections } from '@/hooks/usePageSections';
 import {
   Sidebar,
   SidebarContent,
@@ -24,9 +25,17 @@ export function AppSidebar() {
   const { data: achievementSettings } = useAchievementSettings();
   const { data: targetSettings } = useTargetSettings();
   const { data: pillarsData } = usePillars();
+  const { data: globalSections } = usePageSections('global');
+  const isPageVisible = (key: string) => {
+    if (!globalSections) return true;
+    const s = globalSections.find(x => x.section_key === key);
+    return s ? s.is_visible : true;
+  };
 
   const staticItems = [
-    { title_ar: 'خلفية الخطة', title_en: 'Plan Background', url: '/strategy-background', icon: BookOpen },
+    ...(isPageVisible('strategy_background')
+      ? [{ title_ar: 'خلفية الخطة', title_en: 'Plan Background', url: '/strategy-background', icon: BookOpen }]
+      : []),
     { title_ar: 'لوحة المعلومات', title_en: 'Dashboard', url: '/', icon: LayoutDashboard },
     { title_ar: 'الهيكل التنظيمي', title_en: 'Hierarchy', url: '/hierarchy', icon: Network },
     { title_ar: 'الجدول الزمني', title_en: 'Timeline', url: '/timeline', icon: Calendar },

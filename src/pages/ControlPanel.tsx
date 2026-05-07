@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Settings2, Database, LayoutDashboard, Trophy, Target } from 'lucide-react';
+import { Settings2, Database, LayoutDashboard, Trophy, Target, BookOpen } from 'lucide-react';
 import DashboardAdmin from './DashboardAdmin';
 import AdminPage from './AdminPage';
 import AchievementsAdmin from './AchievementsAdmin';
 import TargetsAdmin from './TargetsAdmin';
+import PagesAdmin from './PagesAdmin';
 
 export default function ControlPanel() {
   const { t } = useLanguage();
@@ -35,6 +36,10 @@ export default function ControlPanel() {
             <LayoutDashboard className="h-4 w-4" />
             {t('إدارة لوحة المعلومات', 'Dashboard Management')}
           </TabsTrigger>
+          <TabsTrigger value="pages" className="gap-2">
+            <BookOpen className="h-4 w-4" />
+            {t('إدارة الصفحات', 'Pages Management')}
+          </TabsTrigger>
           <TabsTrigger value="targets" className="gap-2">
             <Target className="h-4 w-4" />
             {t('إدارة المستهدفات', 'Targets Management')}
@@ -51,6 +56,10 @@ export default function ControlPanel() {
 
         <TabsContent value="dashboard" className="mt-6">
           <DashboardAdmin embedded />
+        </TabsContent>
+
+        <TabsContent value="pages" className="mt-6">
+          <PagesAdmin />
         </TabsContent>
 
         <TabsContent value="targets" className="mt-6">
