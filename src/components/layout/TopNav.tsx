@@ -4,6 +4,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useAchievementSettings } from '@/hooks/useAchievementSettings';
 import { useTargetSettings } from '@/hooks/useTargetSettings';
 import { usePillars } from '@/hooks/useStrategyData';
+import { usePageSections } from '@/hooks/usePageSections';
 import { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -80,6 +81,12 @@ export function TopNav() {
   const { data: achievementSettings } = useAchievementSettings();
   const { data: targetSettings } = useTargetSettings();
   const { data: pillarsData } = usePillars();
+  const { data: globalSections } = usePageSections('global');
+  const showStrategyBackground = (() => {
+    if (!globalSections) return true;
+    const s = globalSections.find(x => x.section_key === 'strategy_background');
+    return s ? s.is_visible : true;
+  })();
 
   const pillarItems = (pillarsData || []).map(p => ({
     title_ar: p.name_ar, title_en: p.name_en, url: `/pillar/${p.id}`,
@@ -165,6 +172,7 @@ export function TopNav() {
                   </NavLink>
 
                   {/* Strategy Background */}
+                  {showStrategyBackground && (
                   <NavLink
                     to="/strategy-background"
                     end
@@ -174,6 +182,7 @@ export function TopNav() {
                     <BookOpen className="h-4 w-4" />
                     <span>{t('خلفية الخطة', 'Plan Background')}</span>
                   </NavLink>
+                  )}
 
                   {/* Targets Dropdown - hidden temporarily */}
                   {false && targetItems.length > 0 && (
@@ -274,6 +283,7 @@ export function TopNav() {
               </NavLink>
 
               {/* Mobile Strategy Background */}
+              {showStrategyBackground && (
               <NavLink
                 to="/strategy-background"
                 end
@@ -284,6 +294,7 @@ export function TopNav() {
                 <BookOpen className="h-4 w-4" />
                 <span>{t('خلفية الخطة', 'Plan Background')}</span>
               </NavLink>
+              )}
 
               {/* Mobile Targets - hidden temporarily */}
               {false && targetItems.length > 0 && (
