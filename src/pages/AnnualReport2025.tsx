@@ -464,7 +464,7 @@ export default function AnnualReport2025() {
                                 <tr key={p.id} className="border-b border-border last:border-0">
                                   <td className="py-1.5">{t(p.name_ar, p.name_en)}</td>
                                   <td className="py-1.5 text-center w-20"><StatusBadge status={normalize(p.status)} t={t} /></td>
-                                  <td className="py-1.5 text-center w-12 font-bold">{p.weight || 0}%</td>
+                                  <td className="py-1.5 text-center w-12 font-bold">{Number(((p.weight || 0) as number).toFixed(2))}%</td>
                                   <td className="py-1.5 text-center w-20 text-muted-foreground">{p.end_date?.slice(0, 7) || '—'}</td>
                                 </tr>
                               ))}
