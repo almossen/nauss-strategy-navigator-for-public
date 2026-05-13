@@ -485,11 +485,24 @@ export default function AnnualReport2025() {
                               {gKpis.map((k: any) => {
                                 const pct = Math.round(kpiAchievementPct(k));
                                 const achieved = pct >= 100;
+                                const isPct = (k.unit || '').includes('نسبة');
+                                const fmt = (v: any) => {
+                                  if (v === null || v === undefined || v === '') return '—';
+                                  const s = String(v).trim();
+                                  if (s === '—') return s;
+                                  const n = parseFloat(s.replace(/[^\d.\-]/g, ''));
+                                  if (isNaN(n)) return s;
+                                  if (isPct) {
+                                    const val = Math.abs(n) <= 1 ? n * 100 : n;
+                                    return `${Math.round(val)}%`;
+                                  }
+                                  return Number.isInteger(n) ? String(n) : String(n);
+                                };
                                 return (
                                   <tr key={k.id} className="border-b border-border last:border-0">
                                     <td className="py-1.5">{t(k.name_ar, k.name_en)}</td>
-                                    <td className="py-1.5 text-center w-14 font-bold">{k.target_2025 || '—'}</td>
-                                    <td className="py-1.5 text-center w-14 font-bold">{actualsMap[k.id] || '—'}</td>
+                                    <td className="py-1.5 text-center w-14 font-bold">{fmt(k.target_2025)}</td>
+                                    <td className="py-1.5 text-center w-14 font-bold">{fmt(actualsMap[k.id])}</td>
                                     <td className="py-1.5 text-center w-16">
                                       <span className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-bold ${achieved ? 'bg-green-100 text-green-800' : pct >= 70 ? 'bg-amber-100 text-amber-800' : 'bg-red-100 text-red-800'}`}>
                                         {pct}%
