@@ -277,31 +277,6 @@ export default function AnnualReport2025() {
             <StatCard icon={TrendingDown} color="hsl(20 7% 55%)" value={totalKPIsNotAchieved} label={t('قيد التحقق', 'In Progress KPIs')} />
           </div>
 
-          {/* Highlights */}
-          {settings?.highlights && settings.highlights.length > 0 && (
-            <div className="mb-6">
-              <div className="section-title-bar">
-                <Sparkles className="h-5 w-5" style={{ color: 'hsl(186 37% 29%)' }} />
-                <h3 className="text-lg font-bold">{t('أبرز الإنجازات', 'Key Highlights')}</h3>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                {settings.highlights.slice(0, 6).map((h: any, i: number) => (
-                  <div key={i} className="rounded-xl p-3.5 border border-border bg-muted/20">
-                    <div className="flex items-start gap-3">
-                      <div className="w-7 h-7 rounded-lg flex items-center justify-center text-white text-xs font-bold shrink-0" style={{ background: 'hsl(186 37% 29%)' }}>
-                        {i + 1}
-                      </div>
-                      <div>
-                        <div className="font-bold text-sm leading-tight mb-1">{t(h.title_ar || h.title, h.title_en || h.title)}</div>
-                        <div className="text-xs text-muted-foreground leading-relaxed">{t(h.description_ar || h.desc, h.description_en || h.desc)}</div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
           <ReportFooter pageNum={3} />
         </section>
 
