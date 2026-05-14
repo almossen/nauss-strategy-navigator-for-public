@@ -1,4 +1,6 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { usePillars, useAllProjects, useUniversityInfo, useInitiatives } from '@/hooks/useStrategyData';
 import { useAllKPIs, useAllStrategicGoals } from '@/hooks/useAllKPIs';
@@ -102,6 +104,70 @@ export default function AnnualReport2025() {
 
   const today = new Date().toLocaleDateString(isRTL ? 'ar-SA' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
+  const [exporting, setExporting] = useState(false);
+
+  const handleExportPDF = async () => {
+    setExporting(true);
+    try {
+      await document.fonts.ready;
+      const pages = Array.from(document.querySelectorAll<HTMLElement>('.report-page'));
+      if (pages.length === 0) return;
+
+      const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+      const A4_W = 210;
+      const A4_H = 297;
+
+      for (let i = 0; i < pages.length; i++) {
+        const el = pages[i];
+        const canvas = await html2canvas(el, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#ffffff',
+          logging: false,
+          windowWidth: el.scrollWidth,
+          windowHeight: el.scrollHeight,
+        });
+        const imgData = canvas.toDataURL('image/png');
+        const ratio = canvas.height / canvas.width;
+        const renderedH = A4_W * ratio;
+
+        if (i > 0) pdf.addPage();
+
+        if (renderedH <= A4_H) {
+          // Single A4 page
+          pdf.addImage(imgData, 'PNG', 0, 0, A4_W, renderedH);
+        } else {
+          // Slice tall page across multiple A4 pages
+          const pageHeightPx = (A4_H / A4_W) * canvas.width;
+          let sourceY = 0;
+          let first = true;
+          while (sourceY < canvas.height) {
+            const sliceHeight = Math.min(pageHeightPx, canvas.height - sourceY);
+            const sliceCanvas = document.createElement('canvas');
+            sliceCanvas.width = canvas.width;
+            sliceCanvas.height = sliceHeight;
+            const ctx = sliceCanvas.getContext('2d')!;
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, sliceCanvas.width, sliceCanvas.height);
+            ctx.drawImage(canvas, 0, sourceY, canvas.width, sliceHeight, 0, 0, canvas.width, sliceHeight);
+            const sliceData = sliceCanvas.toDataURL('image/png');
+            const sliceMM = (sliceHeight / canvas.width) * A4_W;
+            if (!first) pdf.addPage();
+            pdf.addImage(sliceData, 'PNG', 0, 0, A4_W, sliceMM);
+            sourceY += sliceHeight;
+            first = false;
+          }
+        }
+      }
+
+      pdf.save(`NAUSS-Annual-Report-${YEAR}.pdf`);
+    } catch (e) {
+      console.error('PDF export failed', e);
+    } finally {
+      setExporting(false);
+    }
+  };
+
   return (
     <>
       <style>{`
@@ -145,9 +211,9 @@ export default function AnnualReport2025() {
           <div className="text-sm text-muted-foreground">
             {t('تقرير منجزات الخطة الاستراتيجية', 'Strategic Plan Annual Report')} — {YEAR}
           </div>
-          <Button onClick={() => window.print()} className="gap-2">
+          <Button onClick={handleExportPDF} disabled={exporting} className="gap-2">
             <Printer className="h-4 w-4" />
-            {t('طباعة / حفظ PDF', 'Print / Save PDF')}
+            {exporting ? t('جاري التصدير...', 'Exporting...') : t('تصدير PDF', 'Export PDF')}
           </Button>
         </div>
 
