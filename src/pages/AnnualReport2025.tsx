@@ -119,25 +119,35 @@ export default function AnnualReport2025() {
 
       for (let i = 0; i < pages.length; i++) {
         const el = pages[i];
+        // Scroll into view so html2canvas captures correctly
+        el.scrollIntoView({ block: 'start' });
+        await new Promise(r => setTimeout(r, 100));
+
         const canvas = await html2canvas(el, {
-          scale: 2,
+          scale: 1.5,
           useCORS: true,
           backgroundColor: '#ffffff',
           logging: false,
-          windowWidth: el.scrollWidth,
-          windowHeight: el.scrollHeight,
         });
-        const imgData = canvas.toDataURL('image/png');
+
+        if (!canvas || canvas.width === 0 || canvas.height === 0) {
+          console.warn(`Skipping page ${i}: empty canvas`);
+          continue;
+        }
+
+        const imgData = canvas.toDataURL('image/jpeg', 0.92);
+        if (!imgData || imgData.length < 100) {
+          console.warn(`Skipping page ${i}: invalid image data`);
+          continue;
+        }
         const ratio = canvas.height / canvas.width;
         const renderedH = A4_W * ratio;
 
         if (i > 0) pdf.addPage();
 
         if (renderedH <= A4_H) {
-          // Single A4 page
-          pdf.addImage(imgData, 'PNG', 0, 0, A4_W, renderedH);
+          pdf.addImage(imgData, 'JPEG', 0, 0, A4_W, renderedH);
         } else {
-          // Slice tall page across multiple A4 pages
           const pageHeightPx = (A4_H / A4_W) * canvas.width;
           let sourceY = 0;
           let first = true;
@@ -150,10 +160,10 @@ export default function AnnualReport2025() {
             ctx.fillStyle = '#ffffff';
             ctx.fillRect(0, 0, sliceCanvas.width, sliceCanvas.height);
             ctx.drawImage(canvas, 0, sourceY, canvas.width, sliceHeight, 0, 0, canvas.width, sliceHeight);
-            const sliceData = sliceCanvas.toDataURL('image/png');
+            const sliceData = sliceCanvas.toDataURL('image/jpeg', 0.92);
             const sliceMM = (sliceHeight / canvas.width) * A4_W;
             if (!first) pdf.addPage();
-            pdf.addImage(sliceData, 'PNG', 0, 0, A4_W, sliceMM);
+            pdf.addImage(sliceData, 'JPEG', 0, 0, A4_W, sliceMM);
             sourceY += sliceHeight;
             first = false;
           }
