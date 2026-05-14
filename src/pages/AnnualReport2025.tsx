@@ -439,59 +439,108 @@ export default function AnnualReport2025() {
         </section>
 
         {/* ===== PAGES 4+: ONE PAGE PER PILLAR ===== */}
-        {pillarStats.map((ps, idx) => (
-          <section key={ps.pillar.id} className="report-page allow-flow">
-            <ReportHeader
-              title={t(ps.pillar.name_ar, ps.pillar.name_en)}
-              subtitle={t('تفاصيل أداء المرتكز خلال 2025', 'Pillar performance details for 2025')}
-              accent={ps.pillar.color || 'hsl(186 37% 29%)'}
-            />
+        {(() => {
+          // Build paginated pillar pages: split initiatives into chunks that fit one A4 page.
+          // Heuristic: each page has a content budget in "rows".
+          // Initiative card cost = 3 (header + paddings) + max(kpis, projects) rows.
+          const PAGE_BUDGET = 38; // rows per A4 content area (after header)
+          const FIRST_PAGE_BUDGET = PAGE_BUDGET - 8; // pillar header card eats ~8 rows
 
-            {/* Pillar header card */}
-            <div className="rounded-xl p-4 mb-4 text-white" style={{ background: ps.pillar.color || 'hsl(186 37% 29%)' }}>
-              <div className="grid grid-cols-4 gap-3">
-                <div>
-                  <div className="text-xs opacity-80">{t('المشاريع', 'Projects')}</div>
-                  <div className="text-3xl font-black">{ps.all.length}</div>
-                </div>
-                <div>
-                  <div className="text-xs opacity-80">{t('مكتملة', 'Completed')}</div>
-                  <div className="text-3xl font-black">{ps.completed.length}</div>
-                </div>
-                <div>
-                  <div className="text-xs opacity-80">{t('تحقق المشاريع', 'Projects Achievement')}</div>
-                  <div className="text-3xl font-black">{ps.projectsAchievement}%</div>
-                </div>
-                <div>
-                  <div className="text-xs opacity-80">{t('أداء المؤشرات', 'KPI Performance')}</div>
-                  <div className="text-3xl font-black">{ps.kpiScore}%</div>
-                </div>
-              </div>
-              {ps.pillar.general_goal_ar && (
-                <div className="mt-3 pt-3 border-t border-white/20 text-xs leading-relaxed opacity-90">
-                  <strong>{t('الهدف العام:', 'General Goal:')}</strong> {t(ps.pillar.general_goal_ar, ps.pillar.general_goal_en)}
+          let runningPageNum = 4;
+          const pillarPages: Array<{
+            ps: typeof pillarStats[number];
+            groups: Array<{ init: any; projects: any[]; kpis: any[] }>;
+            isFirst: boolean;
+            partIndex: number;
+            partTotal: number;
+            pageNum: number;
+          }> = [];
+
+          pillarStats.forEach((ps) => {
+            const pillarInitiatives = (initiatives || []).filter((it: any) => it.pillar_id === ps.pillar.id);
+            const groups = pillarInitiatives.map((init: any) => ({
+              init,
+              projects: ps.all.filter((p: any) => p.initiative_id === init.id),
+              kpis: ps.kpis.filter((k: any) => k.initiative_id === init.id),
+            })).filter(g => g.projects.length > 0 || g.kpis.length > 0);
+
+            if (groups.length === 0) {
+              runningPageNum += 1;
+              pillarPages.push({ ps, groups: [], isFirst: true, partIndex: 0, partTotal: 1, pageNum: runningPageNum });
+              return;
+            }
+
+            const chunks: typeof groups[] = [];
+            let current: typeof groups = [];
+            let used = 0;
+            let budget = FIRST_PAGE_BUDGET;
+            groups.forEach((g) => {
+              const cost = 3 + Math.max(g.kpis.length, g.projects.length, 1);
+              if (used + cost > budget && current.length > 0) {
+                chunks.push(current);
+                current = [];
+                used = 0;
+                budget = PAGE_BUDGET;
+              }
+              current.push(g);
+              used += cost;
+            });
+            if (current.length > 0) chunks.push(current);
+
+            chunks.forEach((chunk, ci) => {
+              runningPageNum += 1;
+              pillarPages.push({
+                ps,
+                groups: chunk,
+                isFirst: ci === 0,
+                partIndex: ci,
+                partTotal: chunks.length,
+                pageNum: runningPageNum,
+              });
+            });
+          });
+
+          return pillarPages.map(({ ps, groups, isFirst, partIndex, partTotal, pageNum }) => (
+            <section key={`${ps.pillar.id}-${partIndex}`} className="report-page">
+              <ReportHeader
+                title={t(ps.pillar.name_ar, ps.pillar.name_en) + (partTotal > 1 ? ` (${partIndex + 1}/${partTotal})` : '')}
+                subtitle={t('تفاصيل أداء المرتكز خلال 2025', 'Pillar performance details for 2025')}
+                accent={ps.pillar.color || 'hsl(186 37% 29%)'}
+              />
+
+              {isFirst && (
+                <div className="rounded-xl p-4 mb-4 text-white" style={{ background: ps.pillar.color || 'hsl(186 37% 29%)' }}>
+                  <div className="grid grid-cols-4 gap-3">
+                    <div>
+                      <div className="text-xs opacity-80">{t('المشاريع', 'Projects')}</div>
+                      <div className="text-3xl font-black">{ps.all.length}</div>
+                    </div>
+                    <div>
+                      <div className="text-xs opacity-80">{t('مكتملة', 'Completed')}</div>
+                      <div className="text-3xl font-black">{ps.completed.length}</div>
+                    </div>
+                    <div>
+                      <div className="text-xs opacity-80">{t('تحقق المشاريع', 'Projects Achievement')}</div>
+                      <div className="text-3xl font-black">{ps.projectsAchievement}%</div>
+                    </div>
+                    <div>
+                      <div className="text-xs opacity-80">{t('أداء المؤشرات', 'KPI Performance')}</div>
+                      <div className="text-3xl font-black">{ps.kpiScore}%</div>
+                    </div>
+                  </div>
+                  {ps.pillar.general_goal_ar && (
+                    <div className="mt-3 pt-3 border-t border-white/20 text-xs leading-relaxed opacity-90">
+                      <strong>{t('الهدف العام:', 'General Goal:')}</strong> {t(ps.pillar.general_goal_ar, ps.pillar.general_goal_en)}
+                    </div>
+                  )}
                 </div>
               )}
-            </div>
 
-            {/* Group projects & KPIs by initiative */}
-            {(() => {
-              const pillarInitiatives = (initiatives || []).filter((it: any) => it.pillar_id === ps.pillar.id);
-              const groups = pillarInitiatives.map((init: any) => ({
-                init,
-                projects: ps.all.filter((p: any) => p.initiative_id === init.id),
-                kpis: ps.kpis.filter((k: any) => k.initiative_id === init.id),
-              })).filter(g => g.projects.length > 0 || g.kpis.length > 0);
-
-              if (groups.length === 0) {
-                return (
-                  <div className="text-xs text-muted-foreground italic text-center py-6">
-                    {t('لا توجد مبادرات لعرضها', 'No initiatives to display')}
-                  </div>
-                );
-              }
-
-              return (
+              {groups.length === 0 ? (
+                <div className="text-xs text-muted-foreground italic text-center py-6">
+                  {t('لا توجد مبادرات لعرضها', 'No initiatives to display')}
+                </div>
+              ) : (
                 <div className="space-y-4">
                   {groups.map(({ init, projects: gProjects, kpis: gKpis }) => (
                     <div key={init.id} className="rounded-xl border border-border overflow-hidden avoid-break">
@@ -577,12 +626,12 @@ export default function AnnualReport2025() {
                     </div>
                   ))}
                 </div>
-              );
-            })()}
+              )}
 
-            <ReportFooter pageNum={5 + idx} />
-          </section>
-        ))}
+              <ReportFooter pageNum={pageNum} />
+            </section>
+          ));
+        })()}
 
         {/* ===== FINAL PAGE: CONCLUSION ===== */}
         <section className="report-page">
