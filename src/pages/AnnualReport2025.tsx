@@ -364,7 +364,7 @@ export default function AnnualReport2025() {
 
         {/* ===== PAGES 4+: ONE PAGE PER PILLAR ===== */}
         {pillarStats.map((ps, idx) => (
-          <section key={ps.pillar.id} className="report-page">
+          <section key={ps.pillar.id} className="report-page allow-flow">
             <ReportHeader
               title={t(ps.pillar.name_ar, ps.pillar.name_en)}
               subtitle={t('تفاصيل أداء المرتكز خلال 2025', 'Pillar performance details for 2025')}
@@ -418,7 +418,7 @@ export default function AnnualReport2025() {
               return (
                 <div className="space-y-4">
                   {groups.map(({ init, projects: gProjects, kpis: gKpis }) => (
-                    <div key={init.id} className="rounded-xl border border-border overflow-hidden">
+                    <div key={init.id} className="rounded-xl border border-border overflow-hidden avoid-break">
                       {/* Initiative header */}
                       <div className="px-3 py-2 flex items-center gap-2" style={{ background: 'hsl(186 20% 94%)', borderInlineStart: `4px solid ${ps.pillar.color || 'hsl(186 37% 29%)'}` }}>
                         <Sparkles className="h-3.5 w-3.5" style={{ color: ps.pillar.color || 'hsl(186 37% 29%)' }} />
