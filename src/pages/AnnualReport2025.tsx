@@ -633,58 +633,6 @@ export default function AnnualReport2025() {
           ));
         })()}
 
-        {/* ===== FINAL PAGE: CONCLUSION ===== */}
-        <section className="report-page">
-          <ReportHeader title={t('الخلاصة والتطلعات', 'Conclusion & Outlook')} subtitle={t('نتائج عام 2025 ومحاور التركيز للعام القادم', '2025 Outcomes and Focus Areas for Next Year')} />
-
-          <div className="grid grid-cols-2 gap-4 mb-6">
-            <div className="rounded-xl p-5 border-2" style={{ borderColor: 'hsl(152 55% 40%)', background: 'hsl(152 50% 96%)' }}>
-              <div className="flex items-center gap-2 mb-3">
-                <CheckCircle2 className="h-5 w-5" style={{ color: 'hsl(152 55% 40%)' }} />
-                <h4 className="font-bold">{t('ما تم إنجازه', 'What was Achieved')}</h4>
-              </div>
-              <ul className="space-y-1.5 text-sm">
-                <li>• {t(`اكتمال ${completed.length} مشروعاً ضمن مرتكزات الخطة`, `${completed.length} projects completed across pillars`)}</li>
-                <li>• {t(`إطلاق ${launched.length} مشروعاً قيد التنفيذ`, `${launched.length} projects in progress`)}</li>
-                <li>• {t(`تحقق ${totalKPIsAchieved} من أصل ${kpis2025.length} مؤشر`, `${totalKPIsAchieved} of ${kpis2025.length} KPIs achieved`)}</li>
-                <li>• {t(`متوسط التحقق العام: ${overallAchievement}%`, `Overall achievement average: ${overallAchievement}%`)}</li>
-              </ul>
-            </div>
-
-            <div className="rounded-xl p-5 border-2" style={{ borderColor: 'hsl(37 38% 53%)', background: 'hsl(37 50% 96%)' }}>
-              <div className="flex items-center gap-2 mb-3">
-                <Target className="h-5 w-5" style={{ color: 'hsl(37 38% 43%)' }} />
-                <h4 className="font-bold">{t('محاور التركيز للعام 2026', '2026 Focus Areas')}</h4>
-              </div>
-              <ul className="space-y-1.5 text-sm">
-                <li>• {t('تسريع وتيرة المشاريع المتأخرة وضمان مساراتها', 'Accelerate delayed projects and ensure recovery paths')}</li>
-                <li>• {t('رفع أداء المؤشرات التي لم تبلغ المستهدف', 'Boost performance of KPIs below target')}</li>
-                <li>• {t('تعزيز الحوكمة وآليات المتابعة الدورية', 'Strengthen governance and periodic monitoring')}</li>
-                <li>• {t('توسيع الشراكات الداعمة للأهداف الاستراتيجية', 'Expand strategic partnerships')}</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Bottom signature card */}
-          <div className="rounded-2xl p-6 text-white text-center" style={{ background: 'linear-gradient(135deg, hsl(212 36% 14%), hsl(186 37% 29%))' }}>
-            <FileText className="h-10 w-10 mx-auto mb-3" style={{ color: 'hsl(37 38% 75%)' }} />
-            <h3 className="text-xl font-bold mb-2">
-              {t(settings?.footer_title_ar || 'نحو تنفيذ متميز للخطة الاستراتيجية', settings?.footer_title_en || 'Towards Excellence in Strategic Execution')}
-            </h3>
-            <p className="text-sm opacity-85 max-w-xl mx-auto leading-relaxed">
-              {t(
-                settings?.footer_subtitle_ar || 'يعكس هذا التقرير التزام الجامعة بتحقيق رؤيتها الطموحة عبر تنفيذ منظم ومتكامل لأهدافها الاستراتيجية.',
-                settings?.footer_subtitle_en || 'This report reflects the University\'s commitment to achieving its vision through organized and integrated execution of its strategic objectives.'
-              )}
-            </p>
-            <div className="gold-line w-32 mx-auto mt-5 mb-3" />
-            <div className="text-xs opacity-70">
-              {t('جامعة نايف العربية للعلوم الأمنية', 'Naif Arab University for Security Sciences')} · {today}
-            </div>
-          </div>
-
-          <ReportFooter pageNum={5 + pillarStats.length} />
-        </section>
       </div>
     </>
   );
