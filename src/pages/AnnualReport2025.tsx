@@ -194,10 +194,10 @@ export default function AnnualReport2025() {
           .avoid-break { page-break-inside: avoid; break-inside: avoid; }
         }
         .report-page {
-          width: 210mm; min-height: 297mm; margin: 0 auto 1rem;
+          width: 210mm; height: 297mm; margin: 0 auto 1rem;
           background: white; box-shadow: 0 6px 24px rgba(0,0,0,0.08);
           padding: 16mm 14mm; box-sizing: border-box;
-          position: relative;
+          position: relative; overflow: hidden;
         }
         .report-cover {
           color: white;
