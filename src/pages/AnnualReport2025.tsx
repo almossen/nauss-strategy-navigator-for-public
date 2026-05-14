@@ -500,7 +500,7 @@ export default function AnnualReport2025() {
             });
           });
 
-          return pillarPages.map(({ ps, groups, isFirst, partIndex, partTotal, pageNum }) => (
+          const pillarSections = pillarPages.map(({ ps, groups, isFirst, partIndex, partTotal, pageNum }) => (
             <section key={`${ps.pillar.id}-${partIndex}`} className="report-page">
               <ReportHeader
                 title={t(ps.pillar.name_ar, ps.pillar.name_en) + (partTotal > 1 ? ` (${partIndex + 1}/${partTotal})` : '')}
@@ -631,6 +631,67 @@ export default function AnnualReport2025() {
               <ReportFooter pageNum={pageNum} />
             </section>
           ));
+
+          const closingPageNum = runningPageNum + 1;
+          const closingSection = (
+            <section key="closing" className="report-page relative overflow-hidden" style={{ background: 'linear-gradient(160deg, hsl(212 36% 12%) 0%, hsl(186 37% 22%) 60%, hsl(186 37% 29%) 100%)' }}>
+              {/* Decorative accents */}
+              <div className="absolute inset-0 pointer-events-none" style={{
+                backgroundImage: 'radial-gradient(circle at 15% 20%, hsl(37 38% 75% / 0.10) 0%, transparent 45%), radial-gradient(circle at 85% 80%, hsl(37 38% 65% / 0.08) 0%, transparent 50%)',
+              }} />
+              <div className="absolute top-0 inset-x-0 h-1.5" style={{ background: 'linear-gradient(90deg, transparent, hsl(37 38% 65%), transparent)' }} />
+              <div className="absolute bottom-0 inset-x-0 h-1.5" style={{ background: 'linear-gradient(90deg, transparent, hsl(37 38% 65%), transparent)' }} />
+
+              <div className="relative h-full flex flex-col justify-between text-white py-10">
+                {/* Top brand */}
+                <div className="flex items-center justify-between text-[11px] tracking-[0.25em] uppercase opacity-80">
+                  <span style={{ color: 'hsl(37 38% 80%)' }}>{t('تقرير الإنجاز السنوي', 'Annual Achievement Report')} · 2025</span>
+                  <span>{t('جامعة نايف العربية للعلوم الأمنية', 'NAUSS')}</span>
+                </div>
+
+                {/* Center signature */}
+                <div className="text-center px-8">
+                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-8 border" style={{ borderColor: 'hsl(37 38% 65% / 0.5)', background: 'hsl(37 38% 65% / 0.08)' }}>
+                    <FileText className="h-9 w-9" style={{ color: 'hsl(37 38% 80%)' }} />
+                  </div>
+
+                  <div className="gold-line w-16 mx-auto mb-6" style={{ height: '2px', background: 'hsl(37 38% 70%)' }} />
+
+                  <h2 className="text-3xl font-extrabold mb-5 leading-snug">
+                    {t(settings?.footer_title_ar || 'نحو تنفيذ متميز للخطة الاستراتيجية', settings?.footer_title_en || 'Towards Excellence in Strategic Execution')}
+                  </h2>
+
+                  <p className="text-sm leading-loose max-w-2xl mx-auto opacity-85">
+                    {t(
+                      settings?.footer_subtitle_ar || 'يعكس هذا التقرير التزام الجامعة بتحقيق رؤيتها الطموحة عبر تنفيذ منظم ومتكامل لأهدافها الاستراتيجية.',
+                      settings?.footer_subtitle_en || "This report reflects the University's commitment to achieving its vision through organized and integrated execution of its strategic objectives."
+                    )}
+                  </p>
+
+                  <div className="gold-line w-16 mx-auto mt-6" style={{ height: '2px', background: 'hsl(37 38% 70%)' }} />
+                </div>
+
+                {/* Bottom seal */}
+                <div className="text-center">
+                  <div className="inline-flex flex-col items-center gap-2 px-8 py-4 rounded-lg border" style={{ borderColor: 'hsl(37 38% 65% / 0.35)', background: 'hsl(0 0% 100% / 0.03)' }}>
+                    <div className="text-[10px] tracking-[0.3em] uppercase" style={{ color: 'hsl(37 38% 80%)' }}>
+                      {t('وثيقة رسمية', 'Official Document')}
+                    </div>
+                    <div className="text-sm font-bold">
+                      {t('جامعة نايف العربية للعلوم الأمنية', 'Naif Arab University for Security Sciences')}
+                    </div>
+                    <div className="text-[11px] opacity-70">{today}</div>
+                  </div>
+
+                  <div className="mt-6 text-[10px] opacity-60 tracking-wider">
+                    {t(`صفحة ${closingPageNum}`, `Page ${closingPageNum}`)}
+                  </div>
+                </div>
+              </div>
+            </section>
+          );
+
+          return [...pillarSections, closingSection];
         })()}
 
       </div>
