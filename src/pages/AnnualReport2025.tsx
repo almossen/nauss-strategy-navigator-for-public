@@ -114,12 +114,14 @@ export default function AnnualReport2025() {
           .no-print { display: none !important; }
           .report-page { box-shadow: none !important; margin: 0 !important; page-break-after: always; }
           .report-page:last-child { page-break-after: auto; }
+          .report-page.allow-flow { page-break-after: auto; }
+          .avoid-break { page-break-inside: avoid; break-inside: avoid; }
         }
         .report-page {
           width: 210mm; min-height: 297mm; margin: 0 auto 1rem;
           background: white; box-shadow: 0 6px 24px rgba(0,0,0,0.08);
           padding: 16mm 14mm; box-sizing: border-box;
-          position: relative; overflow: hidden;
+          position: relative;
         }
         .report-cover {
           color: white;
