@@ -443,8 +443,8 @@ export default function AnnualReport2025() {
           // Build paginated pillar pages: split initiatives into chunks that fit one A4 page.
           // Heuristic: each page has a content budget in "rows".
           // Initiative card cost = 3 (header + paddings) + max(kpis, projects) rows.
-          const PAGE_BUDGET = 32; // rows per A4 content area (after header) — conservative to prevent overflow
-          const FIRST_PAGE_BUDGET = PAGE_BUDGET - 9; // pillar header card eats ~9 rows
+          const PAGE_BUDGET = 38; // rows per A4 content area (after header)
+          const FIRST_PAGE_BUDGET = PAGE_BUDGET - 8; // pillar header card eats ~8 rows
 
           let runningPageNum = 4;
           const pillarPages: Array<{
@@ -475,8 +475,8 @@ export default function AnnualReport2025() {
             let used = 0;
             let budget = FIRST_PAGE_BUDGET;
             groups.forEach((g) => {
-              // Initiative card: title + meta (~4 rows) + content rows + breathing room
-              const cost = 5 + Math.max(g.kpis.length, g.projects.length, 1);
+              // Initiative card: title + meta + content rows
+              const cost = 4 + Math.max(g.kpis.length, g.projects.length, 1);
               if (used + cost > budget && current.length > 0) {
                 chunks.push(current);
                 current = [];
