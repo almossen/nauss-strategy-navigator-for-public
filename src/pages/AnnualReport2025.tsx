@@ -426,69 +426,76 @@ export default function AnnualReport2025() {
                         </div>
                       </div>
 
-                      {/* Projects under initiative */}
-                      {gProjects.length > 0 && (
-                        <div className="px-3 pt-2">
-                          <div className="flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1">
-                            <Building2 className="h-3 w-3" />
-                            {t('المشاريع', 'Projects')}
-                          </div>
-                          <table className="w-full text-[11px] border-collapse">
-                            <tbody>
-                              {gProjects.map((p: any) => (
-                                <tr key={p.id} className="border-b border-border last:border-0">
-                                  <td className="py-1.5">{t(p.name_ar, p.name_en)}</td>
-                                  <td className="py-1.5 text-center w-20"><StatusBadge status={normalize(p.status)} t={t} /></td>
-                                  <td className="py-1.5 text-center w-20 text-muted-foreground">{p.end_date?.slice(0, 7) || '—'}</td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      )}
-
-                      {/* KPIs under initiative */}
-                      {gKpis.length > 0 && (
-                        <div className="px-3 pt-2 pb-3">
+                      {/* Two-column: KPIs (right in RTL) | Projects (left in RTL) */}
+                      <div className="grid grid-cols-2 gap-0 divide-x divide-border [&>*]:min-w-0">
+                        {/* KPIs column (first child = right side in RTL) */}
+                        <div className="px-3 py-2">
                           <div className="flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1">
                             <Target className="h-3 w-3" />
-                            {t('مؤشرات الأداء', 'KPIs')}
+                            {t('مؤشرات الأداء', 'KPIs')} <span className="text-muted-foreground/60">({gKpis.length})</span>
                           </div>
-                          <table className="w-full text-[11px] border-collapse">
-                            <tbody>
-                              {gKpis.map((k: any) => {
-                                const pct = Math.round(kpiAchievementPct(k));
-                                const achieved = pct >= 100;
-                                const isPct = (k.unit || '').includes('نسبة');
-                                const fmt = (v: any) => {
-                                  if (v === null || v === undefined || v === '') return '—';
-                                  const s = String(v).trim();
-                                  if (s === '—') return s;
-                                  const n = parseFloat(s.replace(/[^\d.\-]/g, ''));
-                                  if (isNaN(n)) return s;
-                                  if (isPct) {
-                                    const val = Math.abs(n) <= 1 ? n * 100 : n;
-                                    return `${Math.round(val)}%`;
-                                  }
-                                  return Number.isInteger(n) ? String(n) : String(n);
-                                };
-                                return (
-                                  <tr key={k.id} className="border-b border-border last:border-0">
-                                    <td className="py-1.5">{t(k.name_ar, k.name_en)}</td>
-                                    <td className="py-1.5 text-center w-14 font-bold">{fmt(k.target_2025)}</td>
-                                    <td className="py-1.5 text-center w-14 font-bold">{fmt(actualsMap[k.id])}</td>
-                                    <td className="py-1.5 text-center w-16">
-                                      <span className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-bold ${achieved ? 'bg-green-100 text-green-800' : pct >= 70 ? 'bg-amber-100 text-amber-800' : 'bg-red-100 text-red-800'}`}>
-                                        {pct}%
-                                      </span>
-                                    </td>
-                                  </tr>
-                                );
-                              })}
-                            </tbody>
-                          </table>
+                          {gKpis.length > 0 ? (
+                            <table className="w-full text-[10.5px] border-collapse">
+                              <tbody>
+                                {gKpis.map((k: any) => {
+                                  const pct = Math.round(kpiAchievementPct(k));
+                                  const achieved = pct >= 100;
+                                  const isPct = (k.unit || '').includes('نسبة');
+                                  const fmt = (v: any) => {
+                                    if (v === null || v === undefined || v === '') return '—';
+                                    const s = String(v).trim();
+                                    if (s === '—') return s;
+                                    const n = parseFloat(s.replace(/[^\d.\-]/g, ''));
+                                    if (isNaN(n)) return s;
+                                    if (isPct) {
+                                      const val = Math.abs(n) <= 1 ? n * 100 : n;
+                                      return `${Math.round(val)}%`;
+                                    }
+                                    return Number.isInteger(n) ? String(n) : String(n);
+                                  };
+                                  return (
+                                    <tr key={k.id} className="border-b border-border last:border-0">
+                                      <td className="py-1 leading-tight pe-1">{t(k.name_ar, k.name_en)}</td>
+                                      <td className="py-1 text-center w-10 font-bold">{fmt(k.target_2025)}</td>
+                                      <td className="py-1 text-center w-10 font-bold">{fmt(actualsMap[k.id])}</td>
+                                      <td className="py-1 text-center w-12">
+                                        <span className={`inline-flex items-center px-1 py-0.5 rounded-full text-[9px] font-bold ${achieved ? 'bg-green-100 text-green-800' : pct >= 70 ? 'bg-amber-100 text-amber-800' : 'bg-red-100 text-red-800'}`}>
+                                          {pct}%
+                                        </span>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
+                          ) : (
+                            <div className="text-[10px] text-muted-foreground italic py-1">—</div>
+                          )}
                         </div>
-                      )}
+
+                        {/* Projects column (second child = left side in RTL) */}
+                        <div className="px-3 py-2">
+                          <div className="flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1">
+                            <Building2 className="h-3 w-3" />
+                            {t('المشاريع', 'Projects')} <span className="text-muted-foreground/60">({gProjects.length})</span>
+                          </div>
+                          {gProjects.length > 0 ? (
+                            <table className="w-full text-[10.5px] border-collapse">
+                              <tbody>
+                                {gProjects.map((p: any) => (
+                                  <tr key={p.id} className="border-b border-border last:border-0">
+                                    <td className="py-1 leading-tight pe-1">{t(p.name_ar, p.name_en)}</td>
+                                    <td className="py-1 text-center w-16"><StatusBadge status={normalize(p.status)} t={t} /></td>
+                                    <td className="py-1 text-center w-14 text-muted-foreground">{p.end_date?.slice(0, 7) || '—'}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          ) : (
+                            <div className="text-[10px] text-muted-foreground italic py-1">—</div>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
