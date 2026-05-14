@@ -152,7 +152,7 @@ export default function AnnualReport2025() {
         </div>
 
         {/* ===== PAGE 1: COVER ===== */}
-        <section className="report-page report-cover flex flex-col">
+        <section className="report-page report-cover flex flex-col" style={{ overflow: 'hidden' }}>
           <div className="absolute -top-32 -end-32 w-96 h-96 rounded-full pointer-events-none" style={{ background: 'hsla(37,38%,63%,0.15)' }} />
           <div className="absolute -bottom-40 -start-40 w-[28rem] h-[28rem] rounded-full pointer-events-none" style={{ background: 'hsla(186,40%,40%,0.25)' }} />
 
