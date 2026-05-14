@@ -355,45 +355,6 @@ export default function AnnualReport2025() {
             <StatCard icon={TrendingDown} color="hsl(20 7% 55%)" value={totalKPIsNotAchieved} label={t('قيد التحقق', 'In Progress KPIs')} />
           </div>
 
-          <ReportFooter pageNum={3} />
-        </section>
-
-        {/* ===== PAGE 4: VISION & STRATEGIC CONTEXT ===== */}
-        <section className="report-page">
-          <ReportHeader title={t('السياق الاستراتيجي', 'Strategic Context')} subtitle={t('الرؤية والرسالة وأبعاد الخطة', 'Vision, Mission, and Plan Dimensions')} />
-
-          <div className="grid grid-cols-3 gap-3 mb-6">
-            {[
-              { icon: Eye, title: t('الرؤية', 'Vision'), text: t(uni?.vision_ar || '', uni?.vision_en || ''), color: 'hsl(186 37% 29%)' },
-              { icon: Compass, title: t('الرسالة', 'Mission'), text: t(uni?.mission_ar || '', uni?.mission_en || ''), color: 'hsl(212 36% 34%)' },
-              { icon: Heart, title: t('القيم', 'Values'), text: t(uni?.values_ar || '', uni?.values_en || ''), color: 'hsl(37 38% 53%)' },
-            ].map((it, i) => (
-              <div key={i} className="rounded-xl p-4 border border-border" style={{ background: 'white' }}>
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white" style={{ background: it.color }}>
-                    <it.icon className="h-4 w-4" />
-                  </div>
-                  <h4 className="font-bold text-sm">{it.title}</h4>
-                </div>
-                <p className="text-xs text-muted-foreground leading-relaxed line-clamp-[10]">{it.text || '—'}</p>
-              </div>
-            ))}
-          </div>
-
-          {pillars && goals && initiatives && (
-            <div className="mb-6">
-              <div className="section-title-bar">
-                <Map className="h-5 w-5" style={{ color: 'hsl(186 37% 29%)' }} />
-                <h3 className="text-lg font-bold">{t('الخريطة الاستراتيجية', 'Strategic Map')}</h3>
-              </div>
-              <div className="rounded-xl border border-border bg-white p-2">
-                <div className="strategic-map-print w-full">
-                  <StrategicMap pillars={pillars as any} goals={goals as any} initiatives={initiatives as any} />
-                </div>
-              </div>
-            </div>
-          )}
-
           <div className="section-title-bar">
             <BarChart3 className="h-5 w-5" style={{ color: 'hsl(186 37% 29%)' }} />
             <h3 className="text-lg font-bold">{t('أداء المرتكزات الاستراتيجية', 'Strategic Pillars Performance')}</h3>
@@ -434,6 +395,45 @@ export default function AnnualReport2025() {
               ))}
             </tbody>
           </table>
+
+          <ReportFooter pageNum={3} />
+        </section>
+
+        {/* ===== PAGE 4: VISION & STRATEGIC CONTEXT ===== */}
+        <section className="report-page">
+          <ReportHeader title={t('السياق الاستراتيجي', 'Strategic Context')} subtitle={t('الرؤية والرسالة وأبعاد الخطة', 'Vision, Mission, and Plan Dimensions')} />
+
+          <div className="grid grid-cols-3 gap-3 mb-6">
+            {[
+              { icon: Eye, title: t('الرؤية', 'Vision'), text: t(uni?.vision_ar || '', uni?.vision_en || ''), color: 'hsl(186 37% 29%)' },
+              { icon: Compass, title: t('الرسالة', 'Mission'), text: t(uni?.mission_ar || '', uni?.mission_en || ''), color: 'hsl(212 36% 34%)' },
+              { icon: Heart, title: t('القيم', 'Values'), text: t(uni?.values_ar || '', uni?.values_en || ''), color: 'hsl(37 38% 53%)' },
+            ].map((it, i) => (
+              <div key={i} className="rounded-xl p-4 border border-border" style={{ background: 'white' }}>
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white" style={{ background: it.color }}>
+                    <it.icon className="h-4 w-4" />
+                  </div>
+                  <h4 className="font-bold text-sm">{it.title}</h4>
+                </div>
+                <p className="text-xs text-muted-foreground leading-relaxed line-clamp-[10]">{it.text || '—'}</p>
+              </div>
+            ))}
+          </div>
+
+          {pillars && goals && initiatives && (
+            <div className="mb-6">
+              <div className="section-title-bar">
+                <Map className="h-5 w-5" style={{ color: 'hsl(186 37% 29%)' }} />
+                <h3 className="text-lg font-bold">{t('الخريطة الاستراتيجية', 'Strategic Map')}</h3>
+              </div>
+              <div className="rounded-xl border border-border bg-white p-2">
+                <div className="strategic-map-print w-full">
+                  <StrategicMap pillars={pillars as any} goals={goals as any} initiatives={initiatives as any} />
+                </div>
+              </div>
+            </div>
+          )}
 
           <ReportFooter pageNum={4} />
         </section>
