@@ -718,11 +718,11 @@ export default function AnnualReport2025() {
 }
 
 function ReportHeader({ title, subtitle, accent }: { title: string; subtitle?: string; accent?: string }) {
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage();
   return (
     <div className="mb-5">
       <div className="flex items-center justify-between text-[10px] text-muted-foreground mb-3 pb-2 border-b border-border">
-        <span className="font-bold tracking-wide" style={{ color: accent || 'hsl(186 37% 29%)' }}>
+        <span className={`font-bold ${isRTL ? '' : 'tracking-wide'}`} style={{ color: accent || 'hsl(186 37% 29%)' }}>
           {t('تقرير منجزات الخطة الاستراتيجية', 'Strategic Plan Achievements Report')} · 2025
         </span>
         <span>{t('جامعة نايف العربية للعلوم الأمنية', 'NAUSS')}</span>
