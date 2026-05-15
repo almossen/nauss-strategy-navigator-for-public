@@ -196,6 +196,15 @@ export default function AnnualReport2025() {
           padding: 16mm 14mm; box-sizing: border-box;
           position: relative; overflow: hidden;
         }
+        [dir="rtl"] .report-page,
+        [dir="rtl"] .report-page * {
+          letter-spacing: 0 !important;
+          word-spacing: normal !important;
+          font-family: 'Tajawal', 'Inter', sans-serif !important;
+          text-rendering: auto;
+          font-kerning: normal;
+          font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+        }
         .report-cover {
           color: white;
           background: linear-gradient(135deg, hsl(212 36% 12%) 0%, hsl(186 37% 22%) 55%, hsl(186 37% 29%) 100%);
@@ -213,7 +222,12 @@ export default function AnnualReport2025() {
         .pdf-export-page, .pdf-export-page * {
           direction: ${isRTL ? 'rtl' : 'ltr'};
           unicode-bidi: plaintext;
-          text-rendering: geometricPrecision;
+          letter-spacing: ${isRTL ? '0' : 'normal'} !important;
+          word-spacing: normal !important;
+          font-family: ${isRTL ? "'Tajawal', 'Inter', sans-serif" : "'Inter', 'Tajawal', sans-serif"} !important;
+          text-rendering: auto;
+          font-kerning: normal;
+          font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
           -webkit-font-smoothing: antialiased;
         }
       `}</style>
