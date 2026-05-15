@@ -575,7 +575,7 @@ export default function AnnualReport2025() {
                       <div className="grid grid-cols-2 gap-0 divide-x divide-border [&>*]:min-w-0">
                         {/* KPIs column (first child = right side in RTL) */}
                         <div className="px-3 py-2">
-                          <div className="flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1">
+                          <div className={`flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground uppercase ${isRTL ? '' : 'tracking-wide'} mb-1`}>
                             <Target className="h-3 w-3" />
                             {t('مؤشرات الأداء', 'KPIs')} <span className="text-muted-foreground/60">({gKpis.length})</span>
                           </div>
@@ -620,7 +620,7 @@ export default function AnnualReport2025() {
 
                         {/* Projects column (second child = left side in RTL) */}
                         <div className="px-3 py-2">
-                          <div className="flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1">
+                          <div className={`flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground uppercase ${isRTL ? '' : 'tracking-wide'} mb-1`}>
                             <Building2 className="h-3 w-3" />
                             {t('المشاريع', 'Projects')} <span className="text-muted-foreground/60">({gProjects.length})</span>
                           </div>
@@ -662,7 +662,7 @@ export default function AnnualReport2025() {
 
               <div className="relative h-full flex flex-col justify-between text-white py-10">
                 {/* Top brand */}
-                <div className="flex items-center justify-between text-[11px] tracking-[0.25em] uppercase opacity-80">
+                <div className={`flex items-center justify-between text-[11px] uppercase opacity-80 ${isRTL ? '' : 'tracking-[0.25em]'}`}>
                   <span style={{ color: 'hsl(37 38% 80%)' }}>{t('تقرير الإنجاز السنوي', 'Annual Achievement Report')} · 2025</span>
                   <span>{t('جامعة نايف العربية للعلوم الأمنية', 'NAUSS')}</span>
                 </div>
@@ -692,7 +692,7 @@ export default function AnnualReport2025() {
                 {/* Bottom seal */}
                 <div className="text-center">
                   <div className="inline-flex flex-col items-center gap-2 px-8 py-4 rounded-lg border" style={{ borderColor: 'hsl(37 38% 65% / 0.35)', background: 'hsl(0 0% 100% / 0.03)' }}>
-                    <div className="text-[10px] tracking-[0.3em] uppercase" style={{ color: 'hsl(37 38% 80%)' }}>
+                    <div className={`text-[10px] uppercase ${isRTL ? '' : 'tracking-[0.3em]'}`} style={{ color: 'hsl(37 38% 80%)' }}>
                       {t('وثيقة رسمية', 'Official Document')}
                     </div>
                     <div className="text-sm font-bold">
@@ -701,7 +701,7 @@ export default function AnnualReport2025() {
                     <div className="text-[11px] opacity-70">{today}</div>
                   </div>
 
-                  <div className="mt-6 text-[10px] opacity-60 tracking-wider">
+                  <div className={`mt-6 text-[10px] opacity-60 ${isRTL ? '' : 'tracking-wider'}`}>
                     {t(`صفحة ${closingPageNum}`, `Page ${closingPageNum}`)}
                   </div>
                 </div>
