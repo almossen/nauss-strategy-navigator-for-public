@@ -108,6 +108,7 @@ export default function AnnualReport2025() {
 
   const handleExportPDF = async () => {
     setExporting(true);
+    let exportHost: HTMLDivElement | null = null;
     try {
       await document.fonts.ready;
       const pages = Array.from(document.querySelectorAll<HTMLElement>('.report-page'));
@@ -116,18 +117,38 @@ export default function AnnualReport2025() {
       const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
       const A4_W = 210;
       const A4_H = 297;
+      exportHost = document.createElement('div');
+      exportHost.setAttribute('aria-hidden', 'true');
+      exportHost.style.cssText = [
+        'position: fixed',
+        'left: -10000px',
+        'top: 0',
+        'width: 210mm',
+        'background: #ffffff',
+        'z-index: -1',
+        'pointer-events: none',
+        `direction: ${isRTL ? 'rtl' : 'ltr'}`,
+        `font-family: ${isRTL ? 'Tajawal, Inter, sans-serif' : 'Inter, Tajawal, sans-serif'}`,
+      ].join(';');
+      document.body.appendChild(exportHost);
 
       for (let i = 0; i < pages.length; i++) {
-        const el = pages[i];
-        // Scroll into view so html2canvas captures correctly
-        el.scrollIntoView({ block: 'start' });
-        await new Promise(r => setTimeout(r, 100));
+        const el = pages[i].cloneNode(true) as HTMLElement;
+        el.classList.add('pdf-export-page');
+        el.style.margin = '0';
+        el.style.boxShadow = 'none';
+        exportHost.replaceChildren(el);
+        await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
 
         const canvas = await html2canvas(el, {
-          scale: 1.5,
+          scale: 2,
           useCORS: true,
           backgroundColor: '#ffffff',
           logging: false,
+          scrollX: 0,
+          scrollY: 0,
+          windowWidth: el.scrollWidth,
+          windowHeight: el.scrollHeight,
         });
 
         if (!canvas || canvas.width === 0 || canvas.height === 0) {
@@ -135,45 +156,21 @@ export default function AnnualReport2025() {
           continue;
         }
 
-        const imgData = canvas.toDataURL('image/jpeg', 0.92);
+        const imgData = canvas.toDataURL('image/png');
         if (!imgData || imgData.length < 100) {
           console.warn(`Skipping page ${i}: invalid image data`);
           continue;
         }
-        const ratio = canvas.height / canvas.width;
-        const renderedH = A4_W * ratio;
 
         if (i > 0) pdf.addPage();
-
-        if (renderedH <= A4_H) {
-          pdf.addImage(imgData, 'JPEG', 0, 0, A4_W, renderedH);
-        } else {
-          const pageHeightPx = (A4_H / A4_W) * canvas.width;
-          let sourceY = 0;
-          let first = true;
-          while (sourceY < canvas.height) {
-            const sliceHeight = Math.min(pageHeightPx, canvas.height - sourceY);
-            const sliceCanvas = document.createElement('canvas');
-            sliceCanvas.width = canvas.width;
-            sliceCanvas.height = sliceHeight;
-            const ctx = sliceCanvas.getContext('2d')!;
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, sliceCanvas.width, sliceCanvas.height);
-            ctx.drawImage(canvas, 0, sourceY, canvas.width, sliceHeight, 0, 0, canvas.width, sliceHeight);
-            const sliceData = sliceCanvas.toDataURL('image/jpeg', 0.92);
-            const sliceMM = (sliceHeight / canvas.width) * A4_W;
-            if (!first) pdf.addPage();
-            pdf.addImage(sliceData, 'JPEG', 0, 0, A4_W, sliceMM);
-            sourceY += sliceHeight;
-            first = false;
-          }
-        }
+        pdf.addImage(imgData, 'PNG', 0, 0, A4_W, A4_H, undefined, 'FAST');
       }
 
       pdf.save(`NAUSS-Annual-Report-${YEAR}.pdf`);
     } catch (e) {
       console.error('PDF export failed', e);
     } finally {
+      exportHost?.remove();
       setExporting(false);
     }
   };
@@ -213,6 +210,12 @@ export default function AnnualReport2025() {
         .strategic-map-print > div > div { padding: 0 !important; border: none !important; box-shadow: none !important; background: transparent !important; }
         .strategic-map-print svg { width: 100% !important; height: auto !important; max-width: none !important; }
         .strategic-map-print .max-w-\\[960px\\] { max-width: 100% !important; }
+        .pdf-export-page, .pdf-export-page * {
+          direction: ${isRTL ? 'rtl' : 'ltr'};
+          unicode-bidi: plaintext;
+          text-rendering: geometricPrecision;
+          -webkit-font-smoothing: antialiased;
+        }
       `}</style>
 
       <div className="bg-muted/30 min-h-screen py-6 px-4" dir={isRTL ? 'rtl' : 'ltr'} style={{ fontFamily: isRTL ? 'Tajawal, sans-serif' : 'Inter, sans-serif' }}>
