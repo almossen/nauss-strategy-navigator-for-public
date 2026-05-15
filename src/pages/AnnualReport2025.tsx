@@ -138,7 +138,7 @@ export default function AnnualReport2025() {
         el.style.margin = '0';
         el.style.boxShadow = 'none';
         exportHost.replaceChildren(el);
-        await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+        await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
 
         const canvas = await html2canvas(el, {
           scale: 2,
