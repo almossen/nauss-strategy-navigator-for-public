@@ -257,7 +257,7 @@ export default function AnnualReport2025() {
           <div className="relative z-10 flex-1 flex flex-col justify-center text-center">
             <div className="inline-flex mx-auto items-center gap-2 px-4 py-1.5 rounded-full mb-8" style={{ background: 'hsla(37,38%,63%,0.2)', border: '1px solid hsla(37,38%,63%,0.4)' }}>
               <Trophy className="h-4 w-4" style={{ color: 'hsl(37,38%,75%)' }} />
-              <span className="text-xs font-semibold tracking-wide" style={{ color: 'hsl(37,38%,80%)' }}>
+              <span className={`text-xs font-semibold ${isRTL ? '' : 'tracking-wide'}`} style={{ color: 'hsl(37,38%,80%)' }}>
                 {t('التقرير السنوي', 'Annual Report')} · {YEAR}
               </span>
             </div>
@@ -302,7 +302,7 @@ export default function AnnualReport2025() {
                 <BookOpen className="h-6 w-6" style={{ color: 'hsl(37,38%,80%)' }} />
               </div>
               <div>
-                <div className="text-xs uppercase tracking-wider opacity-80 mb-1">{t('تقديم', 'Foreword')}</div>
+                <div className={`text-xs uppercase ${isRTL ? '' : 'tracking-wider'} opacity-80 mb-1`}>{t('تقديم', 'Foreword')}</div>
                 <h3 className="text-2xl font-bold mb-2">
                   {t('عام من التحول والإنجاز', 'A Year of Transformation and Achievement')}
                 </h3>
@@ -349,7 +349,7 @@ export default function AnnualReport2025() {
             <div className="absolute -end-10 -top-10 w-44 h-44 rounded-full opacity-25" style={{ background: 'hsl(37,38%,63%)' }} />
             <div className="relative grid grid-cols-3 gap-6 items-center">
               <div>
-                <div className="text-xs uppercase tracking-wider opacity-80 mb-2">{t('التحقق العام', 'Overall Achievement')}</div>
+                <div className={`text-xs uppercase ${isRTL ? '' : 'tracking-wider'} opacity-80 mb-2`}>{t('التحقق العام', 'Overall Achievement')}</div>
                 <div className="text-6xl font-black leading-none">{overallAchievement}<span className="text-3xl">%</span></div>
                 <div className="text-xs mt-2 opacity-80">
                   {t('من المستهدف الأساسي للسنة الأولى', 'of Year 1 baseline target')}
