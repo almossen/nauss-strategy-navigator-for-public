@@ -196,6 +196,15 @@ export default function AnnualReport2025() {
           padding: 16mm 14mm; box-sizing: border-box;
           position: relative; overflow: hidden;
         }
+        [dir="rtl"] .report-page,
+        [dir="rtl"] .report-page * {
+          letter-spacing: 0 !important;
+          word-spacing: normal !important;
+          font-family: 'Tajawal', 'Inter', sans-serif !important;
+          text-rendering: auto;
+          font-kerning: normal;
+          font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+        }
         .report-cover {
           color: white;
           background: linear-gradient(135deg, hsl(212 36% 12%) 0%, hsl(186 37% 22%) 55%, hsl(186 37% 29%) 100%);
@@ -213,7 +222,12 @@ export default function AnnualReport2025() {
         .pdf-export-page, .pdf-export-page * {
           direction: ${isRTL ? 'rtl' : 'ltr'};
           unicode-bidi: plaintext;
-          text-rendering: geometricPrecision;
+          letter-spacing: ${isRTL ? '0' : 'normal'} !important;
+          word-spacing: normal !important;
+          font-family: ${isRTL ? "'Tajawal', 'Inter', sans-serif" : "'Inter', 'Tajawal', sans-serif"} !important;
+          text-rendering: auto;
+          font-kerning: normal;
+          font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
           -webkit-font-smoothing: antialiased;
         }
       `}</style>
@@ -243,7 +257,7 @@ export default function AnnualReport2025() {
           <div className="relative z-10 flex-1 flex flex-col justify-center text-center">
             <div className="inline-flex mx-auto items-center gap-2 px-4 py-1.5 rounded-full mb-8" style={{ background: 'hsla(37,38%,63%,0.2)', border: '1px solid hsla(37,38%,63%,0.4)' }}>
               <Trophy className="h-4 w-4" style={{ color: 'hsl(37,38%,75%)' }} />
-              <span className="text-xs font-semibold tracking-wide" style={{ color: 'hsl(37,38%,80%)' }}>
+              <span className={`text-xs font-semibold ${isRTL ? '' : 'tracking-wide'}`} style={{ color: 'hsl(37,38%,80%)' }}>
                 {t('التقرير السنوي', 'Annual Report')} · {YEAR}
               </span>
             </div>
@@ -288,7 +302,7 @@ export default function AnnualReport2025() {
                 <BookOpen className="h-6 w-6" style={{ color: 'hsl(37,38%,80%)' }} />
               </div>
               <div>
-                <div className="text-xs uppercase tracking-wider opacity-80 mb-1">{t('تقديم', 'Foreword')}</div>
+                <div className={`text-xs uppercase ${isRTL ? '' : 'tracking-wider'} opacity-80 mb-1`}>{t('تقديم', 'Foreword')}</div>
                 <h3 className="text-2xl font-bold mb-2">
                   {t('عام من التحول والإنجاز', 'A Year of Transformation and Achievement')}
                 </h3>
@@ -335,7 +349,7 @@ export default function AnnualReport2025() {
             <div className="absolute -end-10 -top-10 w-44 h-44 rounded-full opacity-25" style={{ background: 'hsl(37,38%,63%)' }} />
             <div className="relative grid grid-cols-3 gap-6 items-center">
               <div>
-                <div className="text-xs uppercase tracking-wider opacity-80 mb-2">{t('التحقق العام', 'Overall Achievement')}</div>
+                <div className={`text-xs uppercase ${isRTL ? '' : 'tracking-wider'} opacity-80 mb-2`}>{t('التحقق العام', 'Overall Achievement')}</div>
                 <div className="text-6xl font-black leading-none">{overallAchievement}<span className="text-3xl">%</span></div>
                 <div className="text-xs mt-2 opacity-80">
                   {t('من المستهدف الأساسي للسنة الأولى', 'of Year 1 baseline target')}
@@ -561,7 +575,7 @@ export default function AnnualReport2025() {
                       <div className="grid grid-cols-2 gap-0 divide-x divide-border [&>*]:min-w-0">
                         {/* KPIs column (first child = right side in RTL) */}
                         <div className="px-3 py-2">
-                          <div className="flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1">
+                          <div className={`flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground uppercase ${isRTL ? '' : 'tracking-wide'} mb-1`}>
                             <Target className="h-3 w-3" />
                             {t('مؤشرات الأداء', 'KPIs')} <span className="text-muted-foreground/60">({gKpis.length})</span>
                           </div>
@@ -606,7 +620,7 @@ export default function AnnualReport2025() {
 
                         {/* Projects column (second child = left side in RTL) */}
                         <div className="px-3 py-2">
-                          <div className="flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1">
+                          <div className={`flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground uppercase ${isRTL ? '' : 'tracking-wide'} mb-1`}>
                             <Building2 className="h-3 w-3" />
                             {t('المشاريع', 'Projects')} <span className="text-muted-foreground/60">({gProjects.length})</span>
                           </div>
@@ -648,7 +662,7 @@ export default function AnnualReport2025() {
 
               <div className="relative h-full flex flex-col justify-between text-white py-10">
                 {/* Top brand */}
-                <div className="flex items-center justify-between text-[11px] tracking-[0.25em] uppercase opacity-80">
+                <div className={`flex items-center justify-between text-[11px] uppercase opacity-80 ${isRTL ? '' : 'tracking-[0.25em]'}`}>
                   <span style={{ color: 'hsl(37 38% 80%)' }}>{t('تقرير الإنجاز السنوي', 'Annual Achievement Report')} · 2025</span>
                   <span>{t('جامعة نايف العربية للعلوم الأمنية', 'NAUSS')}</span>
                 </div>
@@ -678,7 +692,7 @@ export default function AnnualReport2025() {
                 {/* Bottom seal */}
                 <div className="text-center">
                   <div className="inline-flex flex-col items-center gap-2 px-8 py-4 rounded-lg border" style={{ borderColor: 'hsl(37 38% 65% / 0.35)', background: 'hsl(0 0% 100% / 0.03)' }}>
-                    <div className="text-[10px] tracking-[0.3em] uppercase" style={{ color: 'hsl(37 38% 80%)' }}>
+                    <div className={`text-[10px] uppercase ${isRTL ? '' : 'tracking-[0.3em]'}`} style={{ color: 'hsl(37 38% 80%)' }}>
                       {t('وثيقة رسمية', 'Official Document')}
                     </div>
                     <div className="text-sm font-bold">
@@ -687,7 +701,7 @@ export default function AnnualReport2025() {
                     <div className="text-[11px] opacity-70">{today}</div>
                   </div>
 
-                  <div className="mt-6 text-[10px] opacity-60 tracking-wider">
+                  <div className={`mt-6 text-[10px] opacity-60 ${isRTL ? '' : 'tracking-wider'}`}>
                     {t(`صفحة ${closingPageNum}`, `Page ${closingPageNum}`)}
                   </div>
                 </div>
@@ -704,11 +718,11 @@ export default function AnnualReport2025() {
 }
 
 function ReportHeader({ title, subtitle, accent }: { title: string; subtitle?: string; accent?: string }) {
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage();
   return (
     <div className="mb-5">
       <div className="flex items-center justify-between text-[10px] text-muted-foreground mb-3 pb-2 border-b border-border">
-        <span className="font-bold tracking-wide" style={{ color: accent || 'hsl(186 37% 29%)' }}>
+        <span className={`font-bold ${isRTL ? '' : 'tracking-wide'}`} style={{ color: accent || 'hsl(186 37% 29%)' }}>
           {t('تقرير منجزات الخطة الاستراتيجية', 'Strategic Plan Achievements Report')} · 2025
         </span>
         <span>{t('جامعة نايف العربية للعلوم الأمنية', 'NAUSS')}</span>
