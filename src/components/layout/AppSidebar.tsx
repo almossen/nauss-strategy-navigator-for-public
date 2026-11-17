@@ -1,4 +1,4 @@
-import { LayoutDashboard, Network, Calendar, Globe, ChevronLeft, ChevronRight, Sparkles, Trophy, Target, Settings2, Building2, BookOpen } from 'lucide-react';
+import { LayoutDashboard, Network, Calendar, Globe, ChevronLeft, ChevronRight, Sparkles, Trophy, Target, Settings2, Building2, BookOpen, FileText } from 'lucide-react';
 import { NavLink } from '@/components/NavLink';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAchievementSettings } from '@/hooks/useAchievementSettings';
@@ -37,6 +37,7 @@ export function AppSidebar() {
       ? [{ title_ar: 'خلفية الخطة', title_en: 'Plan Background', url: '/strategy-background', icon: BookOpen }]
       : []),
     { title_ar: 'لوحة المعلومات', title_en: 'Dashboard', url: '/', icon: LayoutDashboard },
+    { title_ar: 'التقرير السنوي 2025', title_en: 'Annual Report 2025', url: '/report-2025', icon: FileText },
     { title_ar: 'الهيكل التنظيمي', title_en: 'Hierarchy', url: '/hierarchy', icon: Network },
     { title_ar: 'الجدول الزمني', title_en: 'Timeline', url: '/timeline', icon: Calendar },
     { title_ar: 'لوحة التحكم', title_en: 'Control Panel', url: '/admin', icon: Settings2 },
